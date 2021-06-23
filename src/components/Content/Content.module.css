@@ -1,0 +1,15 @@
+.content {
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: space-between;
+
+  background-color: rgba(196, 196, 196, 0.1);
+
+  overflow-y: scroll;
+
+  width: calc(100% - 460px);
+  height: calc(100vh - 120px);
+
+  padding: 26px 29px;
+}
