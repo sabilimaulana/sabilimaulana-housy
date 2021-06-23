@@ -1,8 +1,25 @@
-.content {
+/* .content {
   display: flex;
   flex-wrap: wrap;
 
   justify-content: space-between;
+
+  background-color: rgba(196, 196, 196, 0.1);
+
+  overflow-y: scroll;
+
+  width: calc(100% - 460px);
+  height: calc(100vh - 120px);
+
+  padding: 26px 29px;
+} */
+
+.content {
+  display: grid;
+  /* grid-template-areas: "card space card space card" "card space card space card" "card space card space card"; */
+  grid-template-columns: 290px 290px 290px 290px;
+  grid-template-rows: repeat(100, 240px);
+  gap: 35px 64px;
 
   background-color: rgba(196, 196, 196, 0.1);
 

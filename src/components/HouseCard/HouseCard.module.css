@@ -1,4 +1,4 @@
-.houseCard {
+/* .houseCard {
   position: relative;
 
   display: flex;
@@ -15,6 +15,27 @@
   border-radius: 5px;
   padding: 10px 9px 0px 9px;
   margin-bottom: 35px;
+  transition: 300ms;
+} */
+
+.houseCard {
+  /* grid-area: card; */
+
+  display: flex;
+  justify-content: flex-start;
+  align-content: center;
+  flex-direction: column;
+
+  text-align: left;
+
+  width: 290px;
+  height: 240px;
+
+  margin-bottom: 35px;
+
+  border: 3px solid rgba(196, 196, 196, 0.25);
+  border-radius: 5px;
+  padding: 10px 9px 0px 9px;
   transition: 300ms;
 }
 
@@ -46,9 +67,9 @@
 }
 
 .amenities {
-  position: absolute;
+  position: relative;
   left: 17px;
-  top: 16px;
+  bottom: 200px;
 
   display: flex;
   flex-direction: row;
