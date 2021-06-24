@@ -121,7 +121,16 @@
   cursor: pointer;
 }
 
-.closeButton {
+.warning {
+  position: absolute;
+  bottom: 62px;
+
+  color: red;
+  font-size: 13px;
+  margin: 5px 0;
+}
+
+/* .closeButton {
   position: relative;
   font-size: 20px;
   font-weight: bold;
@@ -133,4 +142,4 @@
 
 .closeButton:hover {
   cursor: pointer;
-}
+} */

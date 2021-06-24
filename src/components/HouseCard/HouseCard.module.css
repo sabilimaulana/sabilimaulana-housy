@@ -18,6 +18,11 @@
   transition: 300ms;
 } */
 
+.link {
+  text-decoration: none;
+  color: black;
+}
+
 .houseCard {
   /* grid-area: card; */
 

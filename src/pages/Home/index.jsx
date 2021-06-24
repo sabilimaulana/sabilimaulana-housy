@@ -108,9 +108,9 @@ function Home({ isLogged }) {
   return (
     <div className="Home">
       <Navbar
-        logged={isLogged}
         handleSearch={handleSearch}
         searchText={searchText}
+        searchbar={true}
       />
       <div style={{ display: "flex", width: "100%" }}>
         <Sidebar

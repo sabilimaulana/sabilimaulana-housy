@@ -22,6 +22,7 @@ const Content = ({ houses, housesDuration }) => {
           return (
             <HouseCard
               key={index}
+              id={house.id}
               houseImage={house.image}
               price={`Rp. ${priceDuration} / ${housesDuration}`}
               houseSpec={`${house.spec.bedroom} Beds, ${house.spec.bathroom} Baths, ${house.spec.sqft}sqft`}

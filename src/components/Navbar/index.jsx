@@ -5,37 +5,57 @@ import styles from "./Navbar.module.css";
 import brandIcon from "../../assets/images/brand-icon.svg";
 import searchIcon from "../../assets/images/search-icon.svg";
 import verticalLine from "../../assets/images/vertical-line.svg";
-import userIcon from "../../assets/images/user-icon.svg";
-import { useState } from "react";
+import userIcon from "../../assets/images/user-picture.svg";
+import { useContext, useEffect, useState } from "react";
 import Signin from "../Signin";
 import Signup from "../Signup";
+import UserDropdown from "../UserDropdown";
+import { UserContext } from "../../Contexts/UserContext";
+import { Link } from "react-router-dom";
 
-const Navbar = ({ logged, handleSearch, searchText }) => {
-  const [log, setLog] = useState(logged);
+const Navbar = ({ logged, handleSearch, searchText, searchbar }) => {
+  const { state } = useContext(UserContext);
+
   const [signinModalShow, setSigninModalShow] = useState(false);
   const [signupModalShow, setSignupModalShow] = useState(false);
+  const [userDropdownShow, setUSerDropdownShow] = useState(false);
+
+  useEffect(() => {}, [state]);
 
   return (
     <nav className={styles.navbar}>
-      <img src={brandIcon} alt="brand icon" width="138px" />
+      <Link to="/">
+        <img src={brandIcon} alt="brand icon" width="138px" />
+      </Link>
 
-      <form className={styles.searchForm}>
-        <input
-          className={styles.searchInput}
-          type="text"
-          onChange={handleSearch}
-          value={searchText}
-        />
-        <img src={verticalLine} alt="search border" height="40px" />
-        <button className={styles.searchButton}>
-          <img src={searchIcon} alt="search icon" />
-        </button>
-      </form>
+      {searchbar && (
+        <form className={styles.searchForm}>
+          <input
+            className={styles.searchInput}
+            type="text"
+            onChange={handleSearch}
+            value={searchText}
+          />
+          <img src={verticalLine} alt="search border" height="40px" />
+          <button className={styles.searchButton}>
+            <img src={searchIcon} alt="search icon" />
+          </button>
+        </form>
+      )}
 
-      {log ? (
-        <div className={styles.user}>
-          <img src={userIcon} alt="user" height="50px" />
-        </div>
+      {state.isLogin ? (
+        <>
+          <div
+            className={styles.user}
+            onClick={() => setUSerDropdownShow(!userDropdownShow)}
+          >
+            <img src={userIcon} alt="user" height="50px" />
+          </div>
+          <UserDropdown
+            showDropdown={userDropdownShow}
+            onHide={() => setUSerDropdownShow(false)}
+          />
+        </>
       ) : (
         <div className={styles.signWrapper}>
           <button

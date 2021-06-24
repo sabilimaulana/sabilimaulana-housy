@@ -1,10 +1,74 @@
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Signin.module.css";
 
+import { users } from "../../constants/users";
+import { UserContext } from "../../Contexts/UserContext";
 // import "bootstrap/dist/css/bootstrap.min.css";
 // import { Modal, Button } from "react-bootstrap";
 
 const Signin = ({ showModal, onHide, onHere }) => {
+  const [userInput, setUserInput] = useState({
+    username: "",
+    password: "",
+  });
+
+  const { state, dispatch } = useContext(UserContext);
+
+  // console.log(state);
+
+  const [warning, setWarning] = useState(false);
+
+  const handleSignin = (e) => {
+    e.preventDefault();
+
+    // dispatch({
+    //   type: "LOGIN",
+    //   payload: {
+    //     id: 1,
+    //     name: "lala",
+    //     username: userInput.username,
+    //     password: userInput.password,
+    //   },
+    // });
+
+    const userAuth = users.filter((user) => {
+      if (
+        user.username === userInput.username &&
+        user.password === userInput.password
+      ) {
+        return true;
+      }
+    });
+
+    if (userAuth.length > 0) {
+      dispatch({
+        type: "LOGIN",
+        payload: {
+          user: {
+            id: 1,
+            name: userAuth[0].name,
+            username: userAuth[0].username,
+            password: userAuth[0].password,
+            email: userAuth[0].email,
+            phone: userAuth[0].phone,
+            status: userAuth[0].status,
+          },
+        },
+      });
+
+      setWarning(false);
+      onHide();
+
+      // localStorage.setItem("userData", JSON.stringify(userAuth[0]));
+      // console.log("success");
+    } else {
+      setWarning(true);
+    }
+
+    // // localStorage.setItem("password", password);
+  };
+
   return showModal ? (
     <>
       <div className={styles.signinModal}>
@@ -16,27 +80,40 @@ const Signin = ({ showModal, onHide, onHere }) => {
           <input
             className={styles.inputField}
             type="text"
+            value={userInput.username}
             name="username"
             id="username"
+            onChange={(e) =>
+              setUserInput({ ...userInput, username: e.target.value })
+            }
           />
           <label className={styles.inputLabel}>Password</label>
           <input
             className={styles.inputField}
             type="password"
-            name="username"
-            id="username"
+            value={userInput.password}
+            name="password"
+            id="password"
+            onChange={(e) =>
+              setUserInput({ ...userInput, password: e.target.value })
+            }
           />
           <Link to="/">
             <input
               type="submit"
               className={styles.signinButton}
               value="Sign in"
-              onClick={(e) => {
-                // e.preventDefault();
-                onHide();
-              }}
+              onClick={handleSignin}
             />
           </Link>
+
+          {warning && (
+            <div className={styles.centerWrapper}>
+              <span className={styles.warning}>
+                Maaf data yang anda masukkan tidak terdaftar
+              </span>
+            </div>
+          )}
 
           <div className={styles.centerWrapper}>
             <p className={styles.signupText}>

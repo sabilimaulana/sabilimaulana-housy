@@ -10,6 +10,8 @@ import houseNine from "../assets/images/houses/house-9.svg";
 
 export const houses = [
   {
+    id: 1,
+    name: "Astina",
     image: houseOne,
     spec: {
       bedroom: 3,
@@ -48,6 +50,8 @@ export const houses = [
     },
   },
   {
+    id: 2,
+    name: "Earth",
     image: houseTwo,
     spec: {
       bedroom: 2,
@@ -85,6 +89,8 @@ export const houses = [
     },
   },
   {
+    id: 3,
+    name: "Sea",
     image: houseThree,
     spec: {
       bedroom: 2,
@@ -122,6 +128,8 @@ export const houses = [
     },
   },
   {
+    id: 4,
+    name: "Mountain",
     image: houseFour,
     spec: {
       bedroom: 3,
@@ -160,6 +168,8 @@ export const houses = [
     },
   },
   {
+    id: 5,
+    name: "Fire",
     image: houseFive,
     spec: {
       bedroom: 2,
@@ -197,6 +207,8 @@ export const houses = [
     },
   },
   {
+    id: 6,
+    name: "Water",
     image: houseSix,
     spec: {
       bedroom: 2,
@@ -234,6 +246,8 @@ export const houses = [
     },
   },
   {
+    id: 7,
+    name: "Road",
     image: houseSeven,
     spec: {
       bedroom: 2,
@@ -271,6 +285,8 @@ export const houses = [
     },
   },
   {
+    id: 8,
+    name: "Resistance",
     image: houseEight,
     spec: {
       bedroom: 2,
@@ -308,6 +324,8 @@ export const houses = [
     },
   },
   {
+    id: 9,
+    name: "Green",
     image: houseNine,
     spec: {
       bedroom: 3,
@@ -346,6 +364,8 @@ export const houses = [
     },
   },
   {
+    id: 10,
+    name: "Grove",
     image: houseFive,
     spec: {
       bedroom: 2,
@@ -383,6 +403,8 @@ export const houses = [
     },
   },
   {
+    id: 11,
+    name: "Libra",
     image: houseSeven,
     spec: {
       bedroom: 2,

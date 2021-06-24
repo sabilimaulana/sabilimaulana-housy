@@ -43,10 +43,38 @@ const Signup = ({ showModal, onHide, onHere }) => {
             id="password"
           />
 
+          <label className={styles.inputLabel}>Phone Number</label>
+          <input
+            className={styles.inputField}
+            type="number"
+            name="phonenumber"
+            id="phonenumber"
+          />
+
+          <label className={styles.inputLabel}>Gender</label>
+          <div className={styles.genderRadio}>
+            <div>
+              <input type="radio" value="male" id="male" name="gender" />
+              <label htmlFor="male">Male</label>
+            </div>
+
+            <div>
+              <input type="radio" value="female" id="female" name="gender" />
+              <label htmlFor="female">Female</label>
+            </div>
+          </div>
+
+          <label className={styles.inputLabel}>Alamat</label>
+          <textarea
+            className={styles.inputAddress}
+            name="address"
+            id="address"
+          />
+
           <input
             type="submit"
             className={styles.signupButton}
-            value="Sign in"
+            value="Sign up"
           />
           <div className={styles.centerWrapper}>
             <p className={styles.signupText}>

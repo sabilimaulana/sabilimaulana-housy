@@ -7,20 +7,26 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import Home from "./pages/Home";
 
+import HouseDetail from "./pages/DetailHouse";
+import { UserContextProvider } from "./Contexts/UserContext";
+
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <Switch>
-        <Route exact path="/">
-          <Home isLogged={true} />
-        </Route>
-        <Route exact path="/guest">
-          <Home isLogged={false} />
-        </Route>
-        {/* <Route exact path="/empty">
-          <Empty />
-        </Route> */}
-      </Switch>
+      <UserContextProvider>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+            {/* <HouseDetail /> */}
+          </Route>
+          <Route exact path="/guest">
+            <Home />
+          </Route>
+          <Route exact path="/house-detail/:id">
+            <HouseDetail />
+          </Route>
+        </Switch>
+      </UserContextProvider>
     </Router>
   </React.StrictMode>,
   document.getElementById("root")
