@@ -29,14 +29,12 @@ const HouseDetail = () => {
       });
     }
 
-    const res = houses.filter((house, index) => {
-      if (house.id == id) {
-        return house;
-      }
+    const res = houses.filter((house) => {
+      return house.id === parseInt(id);
     })[0];
 
     setHouse(res);
-  }, [id]);
+  }, [id, dispatch]);
 
   return (
     <>

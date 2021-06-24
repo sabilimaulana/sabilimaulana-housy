@@ -10,7 +10,7 @@ import { UserContext } from "../../Contexts/UserContext";
 import { useHistory } from "react-router-dom";
 
 const UserDropdown = ({ showDropdown, onHide }) => {
-  const { state, dispatch } = useContext(UserContext);
+  const { dispatch } = useContext(UserContext);
 
   const router = useHistory();
 

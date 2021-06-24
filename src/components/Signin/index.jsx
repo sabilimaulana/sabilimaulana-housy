@@ -33,12 +33,10 @@ const Signin = ({ showModal, onHide, onHere }) => {
     // });
 
     const userAuth = users.filter((user) => {
-      if (
+      return (
         user.username === userInput.username &&
         user.password === userInput.password
-      ) {
-        return true;
-      }
+      );
     });
 
     if (userAuth.length > 0) {

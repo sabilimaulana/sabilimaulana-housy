@@ -11,7 +11,7 @@ import addressIcon from "../../assets/images/profile/address-icon.svg";
 import profilePhoto from "../../assets/images/profile/profile-photo.svg";
 
 import ChangePasswordModal from "../ChangePasswordModal";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const ProfileContent = ({ state }) => {
   const [changePasswordModalShow, setChangePasswordModalShow] = useState(false);

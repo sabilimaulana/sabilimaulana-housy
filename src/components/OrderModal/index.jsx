@@ -1,5 +1,4 @@
 import DatePicker from "react-datepicker";
-import DateInput from "../DateInput";
 import styles from "./orderModal.module.css";
 
 import calendarIcon from "../../assets/images/calendar-icon.svg";

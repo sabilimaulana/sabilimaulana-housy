@@ -22,7 +22,7 @@ const Profile = () => {
         type: "LOGOUT",
       });
     }
-  }, []);
+  }, [dispatch]);
 
   if (state.isLogin) {
     return (

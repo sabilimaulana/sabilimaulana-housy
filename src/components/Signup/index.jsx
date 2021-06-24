@@ -25,7 +25,10 @@ const Signup = ({ showModal, onHide, onHere }) => {
       return;
     }
     const emailRegex =
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    // const emailRegex =
+    // /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const res = emailRegex.test(email);
     if (res) {
       setEmailWarning(false);
@@ -129,7 +132,7 @@ const Signup = ({ showModal, onHide, onHere }) => {
                   value="Male"
                   id="male"
                   name="gender"
-                  value={gender}
+                  // value={gender}
                   onClick={() => {
                     setGender("Male");
                   }}
@@ -143,7 +146,7 @@ const Signup = ({ showModal, onHide, onHere }) => {
                   value="Female"
                   id="female"
                   name="gender"
-                  value={gender}
+                  // value={gender}
                   onClick={() => {
                     setGender("Female");
                   }}

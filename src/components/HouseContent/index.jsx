@@ -6,7 +6,6 @@ import bedroomIcon from "../../assets/images/bedroom-icon.svg";
 import houseTwo from "../../assets/images/houses/house-2.svg";
 import houseThree from "../../assets/images/houses/house-3.svg";
 import houseFour from "../../assets/images/houses/house-4.svg";
-import { Link } from "react-router-dom";
 import OrderModal from "../OrderModal";
 import { useState } from "react";
 

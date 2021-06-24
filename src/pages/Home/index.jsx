@@ -31,9 +31,7 @@ function Home() {
 
   const handleSearchInput = (houses) => {
     const res = houses.filter((house) => {
-      if (house.address.toLowerCase().includes(searchText.toLowerCase())) {
-        return true;
-      }
+      return house.address.toLowerCase().includes(searchText.toLowerCase());
     });
 
     return res;
@@ -45,7 +43,7 @@ function Home() {
   const handleAmenities = (e) => {
     const newAmenities = [...amenities];
 
-    newAmenities.map((amenity, index) => {
+    newAmenities.forEach((amenity) => {
       if (amenity.title === e.target.value) {
         amenity.value = !amenity.value;
       }
@@ -80,17 +78,12 @@ function Home() {
       }
 
       const filteredAmenities = house.amenities.filter((amenity, index) => {
-        if (
+        return (
           amenity.title === amenities[index].title &&
           amenity.value === amenities[index].value
-        ) {
-          return house;
-        }
+        );
       });
-
-      if (filteredAmenities.length === 3) {
-        return house;
-      }
+      return filteredAmenities.length === 3;
     });
 
     return res;
@@ -98,9 +91,10 @@ function Home() {
 
   const filterHouseBasedOnSpec = (houses) => {
     return houses.filter((house) => {
-      if (house.spec.bedroom == bedroom && house.spec.bathroom == bathroom) {
-        return house;
-      }
+      return (
+        house.spec.bedroom === parseInt(bedroom) &&
+        house.spec.bathroom === parseInt(bathroom)
+      );
     });
   };
 
@@ -121,7 +115,7 @@ function Home() {
         type: "LOGOUT",
       });
     }
-  }, []);
+  }, [dispatch]);
 
   // console.log(filterHouseBasedOnSpec(houses));
 
