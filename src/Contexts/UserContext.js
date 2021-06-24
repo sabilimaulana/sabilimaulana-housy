@@ -8,11 +8,13 @@ const initialState = {
     name: "",
     username: "",
     password: "",
+    gender: "",
     email: "",
     phone: "",
     status: "",
+    address: "",
   },
-  isLogin: true,
+  isLogin: false,
 };
 
 const userReducer = (state, action) => {

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Content from "../../components/Content";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
 import { houses } from "../../constants/houses";
+import { UserContext } from "../../Contexts/UserContext";
 
-function Home({ isLogged }) {
+function Home() {
   const [searchText, setSearchText] = useState("");
   const [duration, setDuration] = useState("Year");
   const [bedroom, setBedroom] = useState("2");
@@ -102,6 +103,25 @@ function Home({ isLogged }) {
       }
     });
   };
+
+  const { dispatch } = useContext(UserContext);
+
+  useEffect(() => {
+    const userSession = JSON.parse(sessionStorage.getItem("user"));
+
+    if (userSession) {
+      dispatch({
+        type: "LOGIN",
+        payload: {
+          user: userSession,
+        },
+      });
+    } else {
+      dispatch({
+        type: "LOGOUT",
+      });
+    }
+  }, []);
 
   // console.log(filterHouseBasedOnSpec(houses));
 

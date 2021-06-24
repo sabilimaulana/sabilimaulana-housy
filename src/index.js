@@ -9,6 +9,8 @@ import Home from "./pages/Home";
 
 import HouseDetail from "./pages/DetailHouse";
 import { UserContextProvider } from "./Contexts/UserContext";
+import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,13 +19,18 @@ ReactDOM.render(
         <Switch>
           <Route exact path="/">
             <Home />
-            {/* <HouseDetail /> */}
           </Route>
           <Route exact path="/guest">
             <Home />
           </Route>
           <Route exact path="/house-detail/:id">
             <HouseDetail />
+          </Route>
+          <Route exact path="/me">
+            <Profile />
+          </Route>
+          <Route>
+            <NotFound />
           </Route>
         </Switch>
       </UserContextProvider>

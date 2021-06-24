@@ -3,13 +3,18 @@ import styles from "./HouseContent.module.css";
 import bathroomIcon from "../../assets/images/bathroom-icon.svg";
 import bedroomIcon from "../../assets/images/bedroom-icon.svg";
 
-import houseOne from "../../assets/images/houses/house-1.svg";
 import houseTwo from "../../assets/images/houses/house-2.svg";
 import houseThree from "../../assets/images/houses/house-3.svg";
 import houseFour from "../../assets/images/houses/house-4.svg";
 import { Link } from "react-router-dom";
+import OrderModal from "../OrderModal";
+import { useState } from "react";
 
 const HouseContent = ({ house }) => {
+  const [orderModalShow, setOrderModalShow] = useState(false);
+
+  console.log(orderModalShow);
+
   return (
     <div className={styles.container}>
       <div className={styles.imageWrapper}>
@@ -93,10 +98,21 @@ const HouseContent = ({ house }) => {
       </div>
 
       <div className={styles.book}>
-        <Link to="/" className={styles.booknow}>
+        <button
+          className={styles.booknow}
+          onClick={() => {
+            setOrderModalShow(true);
+          }}
+        >
           Book Now
-        </Link>
+        </button>
       </div>
+      <OrderModal
+        showModal={orderModalShow}
+        onHide={() => {
+          setOrderModalShow(false);
+        }}
+      />
     </div>
   );
 };

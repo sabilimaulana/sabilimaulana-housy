@@ -1,17 +1,43 @@
-import "react-datepicker/dist/react-datepicker.css";
-
 import DatePicker from "react-datepicker";
-import { useState } from "react";
-import styles from "./DateInput.module.css";
+import DateInput from "../DateInput";
+import styles from "./orderModal.module.css";
 
 import calendarIcon from "../../assets/images/calendar-icon.svg";
 import verticalLine from "../../assets/images/vertical-line.svg";
 import dropdownIcon from "../../assets/images/dropdown-icon.svg";
+import { useState } from "react";
 
-const DateInput = () => {
-  const [selectedDate, setSelectedDate] = useState();
+const OrderModal = ({ showModal, onHide }) => {
   return (
-    //tadinya tag form
+    showModal && (
+      <>
+        <div className={styles.orderModal}>
+          <form className={styles.orderForm}>
+            <div className={styles.centerWrapper}>
+              <p className={styles.modalTitle}>How long you will stay?</p>
+            </div>
+
+            {/* date input */}
+
+            <label className={styles.inputLabel}>Check-in</label>
+            <CheckDate />
+
+            <label className={styles.inputLabel}>Check-out</label>
+            <CheckDate />
+
+            <input type="submit" className={styles.orderButton} value="Order" />
+          </form>
+        </div>
+        <div className={styles.background} onClick={onHide}></div>
+      </>
+    )
+  );
+};
+
+const CheckDate = () => {
+  const [selectedDate, setSelectedDate] = useState();
+
+  return (
     <div className={styles.dateForm}>
       <img src={calendarIcon} alt="calendar icon" width="24px" />
       <img
@@ -40,4 +66,4 @@ const DateInput = () => {
   );
 };
 
-export default DateInput;
+export default OrderModal;

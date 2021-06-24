@@ -17,6 +17,7 @@ const UserDropdown = ({ showDropdown, onHide }) => {
   const handleLogout = () => {
     router.push("/");
     dispatch({ type: "LOGOUT" });
+    sessionStorage.clear();
   };
 
   return showDropdown ? (

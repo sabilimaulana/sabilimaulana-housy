@@ -13,7 +13,7 @@ const Signin = ({ showModal, onHide, onHere }) => {
     password: "",
   });
 
-  const { state, dispatch } = useContext(UserContext);
+  const { dispatch } = useContext(UserContext);
 
   // console.log(state);
 
@@ -42,6 +42,21 @@ const Signin = ({ showModal, onHide, onHere }) => {
     });
 
     if (userAuth.length > 0) {
+      sessionStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: 1,
+          name: userAuth[0].name,
+          username: userAuth[0].username,
+          password: userAuth[0].password,
+          email: userAuth[0].email,
+          gender: userAuth[0].gender,
+          address: userAuth[0].address,
+          phone: userAuth[0].phone,
+          status: userAuth[0].status,
+        })
+      );
+
       dispatch({
         type: "LOGIN",
         payload: {
@@ -51,6 +66,8 @@ const Signin = ({ showModal, onHide, onHere }) => {
             username: userAuth[0].username,
             password: userAuth[0].password,
             email: userAuth[0].email,
+            gender: userAuth[0].gender,
+            address: userAuth[0].address,
             phone: userAuth[0].phone,
             status: userAuth[0].status,
           },
@@ -69,71 +86,73 @@ const Signin = ({ showModal, onHide, onHere }) => {
     // // localStorage.setItem("password", password);
   };
 
-  return showModal ? (
-    <>
-      <div className={styles.signinModal}>
-        <form className={styles.signinForm}>
-          <div className={styles.centerWrapper}>
-            <p className={styles.modalTitle}>Sign in</p>
-          </div>
-          <label className={styles.inputLabel}>Username</label>
-          <input
-            className={styles.inputField}
-            type="text"
-            value={userInput.username}
-            name="username"
-            id="username"
-            onChange={(e) =>
-              setUserInput({ ...userInput, username: e.target.value })
-            }
-          />
-          <label className={styles.inputLabel}>Password</label>
-          <input
-            className={styles.inputField}
-            type="password"
-            value={userInput.password}
-            name="password"
-            id="password"
-            onChange={(e) =>
-              setUserInput({ ...userInput, password: e.target.value })
-            }
-          />
-          <Link to="/">
-            <input
-              type="submit"
-              className={styles.signinButton}
-              value="Sign in"
-              onClick={handleSignin}
-            />
-          </Link>
-
-          {warning && (
+  return (
+    showModal && (
+      <>
+        <div className={styles.signinModal}>
+          <form className={styles.signinForm}>
             <div className={styles.centerWrapper}>
-              <span className={styles.warning}>
-                Maaf data yang anda masukkan tidak terdaftar
-              </span>
+              <p className={styles.modalTitle}>Sign in</p>
             </div>
-          )}
+            <label className={styles.inputLabel}>Username</label>
+            <input
+              className={styles.inputField}
+              type="text"
+              value={userInput.username}
+              name="username"
+              id="username"
+              onChange={(e) =>
+                setUserInput({ ...userInput, username: e.target.value })
+              }
+            />
+            <label className={styles.inputLabel}>Password</label>
+            <input
+              className={styles.inputField}
+              type="password"
+              value={userInput.password}
+              name="password"
+              id="password"
+              onChange={(e) =>
+                setUserInput({ ...userInput, password: e.target.value })
+              }
+            />
+            <Link to="/">
+              <input
+                type="submit"
+                className={styles.signinButton}
+                value="Sign in"
+                onClick={handleSignin}
+              />
+            </Link>
 
-          <div className={styles.centerWrapper}>
-            <p className={styles.signupText}>
-              Don't have an account? ? Click
-              <label
-                className={styles.hereButton}
-                onClick={() => {
-                  onHide();
-                  onHere();
-                }}
-              >
-                Here
-              </label>
-            </p>
-          </div>
-        </form>
-      </div>
-      <div className={styles.background} onClick={onHide}></div>
-    </>
-  ) : null;
+            {warning && (
+              <div className={styles.centerWrapper}>
+                <span className={styles.warning}>
+                  Maaf data yang anda masukkan tidak terdaftar
+                </span>
+              </div>
+            )}
+
+            <div className={styles.centerWrapper}>
+              <p className={styles.signupText}>
+                Don't have an account? ? Click
+                <label
+                  className={styles.hereButton}
+                  onClick={() => {
+                    onHide();
+                    onHere();
+                  }}
+                >
+                  Here
+                </label>
+              </p>
+            </div>
+          </form>
+        </div>
+        <div className={styles.background} onClick={onHide}></div>
+      </>
+    )
+  );
 };
 
 export default Signin;

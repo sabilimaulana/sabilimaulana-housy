@@ -81,7 +81,7 @@
   border: 2px solid rgba(210, 210, 210, 0.25);
 }
 
-.inputLabel:focus {
+.inputField:focus {
   outline: 0;
 }
 
