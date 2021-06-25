@@ -115,15 +115,15 @@ export const houses = [
     price: {
       day: {
         title: "Day",
-        value: "25.000",
+        value: "17.000",
       },
       month: {
         title: "Month",
-        value: "750.000",
+        value: "500.000",
       },
       year: {
         title: "Year",
-        value: "9.000.000",
+        value: "6.000.000",
       },
     },
   },
@@ -272,15 +272,15 @@ export const houses = [
     price: {
       day: {
         title: "Day",
-        value: "25.000",
+        value: "17.000",
       },
       month: {
         title: "Month",
-        value: "750.000",
+        value: "500.000",
       },
       year: {
         title: "Year",
-        value: "9.000.000",
+        value: "6.000.000",
       },
     },
   },
@@ -468,15 +468,15 @@ export const houses = [
     price: {
       day: {
         title: "Day",
-        value: "25.000",
+        value: "17.000",
       },
       month: {
         title: "Month",
-        value: "750.000",
+        value: "500.000",
       },
       year: {
         title: "Year",
-        value: "9.000.000",
+        value: "6.000.000",
       },
     },
   },
@@ -546,15 +546,15 @@ export const houses = [
     price: {
       day: {
         title: "Day",
-        value: "25.000",
+        value: "17.000",
       },
       month: {
         title: "Month",
-        value: "750.000",
+        value: "500.000",
       },
       year: {
         title: "Year",
-        value: "9.000.000",
+        value: "6.000.000",
       },
     },
   },
@@ -585,15 +585,15 @@ export const houses = [
     price: {
       day: {
         title: "Day",
-        value: "25.000",
+        value: "17.000",
       },
       month: {
         title: "Month",
-        value: "750.000",
+        value: "500.000",
       },
       year: {
         title: "Year",
-        value: "9.000.000",
+        value: "6.000.000",
       },
     },
   },
@@ -703,15 +703,15 @@ export const houses = [
     price: {
       day: {
         title: "Day",
-        value: "25.000",
+        value: "17.000",
       },
       month: {
         title: "Month",
-        value: "750.000",
+        value: "500.000",
       },
       year: {
         title: "Year",
-        value: "9.000.000",
+        value: "6.000.000",
       },
     },
   },
@@ -1017,15 +1017,15 @@ export const houses = [
     price: {
       day: {
         title: "Day",
-        value: "25.000",
+        value: "17.000",
       },
       month: {
         title: "Month",
-        value: "750.000",
+        value: "500.000",
       },
       year: {
         title: "Year",
-        value: "9.000.000",
+        value: "6.000.000",
       },
     },
   },
@@ -1212,15 +1212,15 @@ export const houses = [
     price: {
       day: {
         title: "Day",
-        value: "25.000",
+        value: "17.000",
       },
       month: {
         title: "Month",
-        value: "750.000",
+        value: "500.000",
       },
       year: {
         title: "Year",
-        value: "9.000.000",
+        value: "6.000.000",
       },
     },
   },

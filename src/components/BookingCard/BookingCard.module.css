@@ -95,7 +95,9 @@
   margin-bottom: 23px;
 }
 
-.statusCard {
+.waitingStatus,
+.cancelStatus,
+.approveStatus {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,9 +105,23 @@
   font-size: 12px;
   width: 112px;
   height: 24px;
-  background: rgba(236, 122, 122, 0.1);
-  color: rgba(236, 122, 122, 0.8);
+
   border-radius: 2px;
+}
+
+.waitingStatus {
+  background: rgba(247, 148, 30, 0.1);
+  color: rgb(247, 148, 30);
+}
+
+.cancelStatus {
+  background: rgba(255, 7, 66, 0.1);
+  color: rgb(255, 7, 66);
+}
+
+.approveStatus {
+  background: rgba(10, 207, 131, 0.1);
+  color: rgb(10, 207, 131);
 }
 
 .cardContentDate {
@@ -248,10 +264,6 @@
 .totalText:last-child,
 .totalPrice:last-child {
   margin-bottom: 0;
-}
-
-.totalPrice {
-  color: #ff0000;
 }
 
 .buttonWrapper {

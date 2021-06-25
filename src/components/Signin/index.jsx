@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styles from "./Signin.module.css";
 
 import { users } from "../../constants/users";
-import { UserContext } from "../../Contexts/UserContext";
+import { UserContext } from "../../contexts/UserContext";
 // import "bootstrap/dist/css/bootstrap.min.css";
 // import { Modal, Button } from "react-bootstrap";
 
@@ -33,7 +33,7 @@ const Signin = ({ showModal, onHide, onHere }) => {
       sessionStorage.setItem(
         "user",
         JSON.stringify({
-          id: 1,
+          id: userAuth[0].id,
           name: userAuth[0].name,
           username: userAuth[0].username,
           password: userAuth[0].password,
@@ -49,7 +49,7 @@ const Signin = ({ showModal, onHide, onHere }) => {
         type: "LOGIN",
         payload: {
           user: {
-            id: 1,
+            id: userAuth[0].id,
             name: userAuth[0].name,
             username: userAuth[0].username,
             password: userAuth[0].password,

@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import HouseContent from "../../components/HouseContent";
 import Navbar from "../../components/Navbar";
 import { houses } from "../../constants/houses";
-import { UserContext } from "../../Contexts/UserContext";
+import { UserContext } from "../../contexts/UserContext";
 
 const HouseDetail = () => {
   const { id } = useParams();

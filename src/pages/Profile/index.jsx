@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import ProfileContent from "../../components/ProfileContent";
-import { UserContext } from "../../Contexts/UserContext";
+import { UserContext } from "../../contexts/UserContext";
 import NotFound from "../../pages/NotFound";
 
 const Profile = () => {

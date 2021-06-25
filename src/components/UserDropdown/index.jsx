@@ -6,7 +6,7 @@ import calendarIcon from "../../assets/images/calendar-icon-blue.svg";
 import billIcon from "../../assets/images/bill-icon.svg";
 import logoutIcon from "../../assets/images/logout-icon.svg";
 import { useContext } from "react";
-import { UserContext } from "../../Contexts/UserContext";
+import { UserContext } from "../../contexts/UserContext";
 import { useHistory } from "react-router-dom";
 
 const UserDropdown = ({ showDropdown, onHide }) => {

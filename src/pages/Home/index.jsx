@@ -1,89 +1,38 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import Content from "../../components/Content";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
 import { houses } from "../../constants/houses";
-import { UserContext } from "../../Contexts/UserContext";
+import { UserContext } from "../../contexts/UserContext";
+import { FilterContext } from "../../contexts/FilterContext";
+import { convertToAngka } from "../../utils/moneyConvert.js";
 
 function Home() {
-  const [searchText, setSearchText] = useState("");
-  const [duration, setDuration] = useState("Year");
-  const [bedroom, setBedroom] = useState("2");
-  const [bathroom, setBathroom] = useState("1");
-  const [amenities, setAmenities] = useState([
-    {
-      title: "Furnished",
-      value: false,
-    },
-    {
-      title: "Pet Allowed",
-      value: false,
-    },
-    {
-      title: "Shared Accomodation",
-      value: false,
-    },
-  ]);
+  const { dispatch } = useContext(UserContext);
+  const { filterState } = useContext(FilterContext);
 
-  const handleSearch = (e) => {
-    setSearchText(e.target.value);
-  };
+  const {
+    duration,
+    bedroom,
+    bathroom,
+    furnished,
+    petAllowed,
+    sharedAccomodation,
+    budget,
+  } = filterState.filter;
 
-  const handleSearchInput = (houses) => {
-    const res = houses.filter((house) => {
-      return house.address.toLowerCase().includes(searchText.toLowerCase());
-    });
-
-    return res;
-  };
-  const handleDuration = (e) => {
-    setDuration(e.target.value);
-  };
-
-  const handleAmenities = (e) => {
-    const newAmenities = [...amenities];
-
-    newAmenities.forEach((amenity) => {
-      if (amenity.title === e.target.value) {
-        amenity.value = !amenity.value;
-      }
-    });
-
-    setAmenities(newAmenities);
-  };
-
-  const handleBedroom = (e) => {
-    setBedroom(e.target.value);
-  };
-
-  const handleBathroom = (e) => {
-    setBathroom(e.target.value);
-  };
-
-  const filterHouse = (houses) => {
-    const filteredHouseBasedOnSearchInput = handleSearchInput(houses);
-    const filteredHouseBasedOnAmenities = filterHouseBasedOnAmenities(
-      filteredHouseBasedOnSearchInput
-    );
-    const filteredHouseBasedOnSpec = filterHouseBasedOnSpec(
-      filteredHouseBasedOnAmenities
-    );
-    return filteredHouseBasedOnSpec;
-  };
+  const { search, isSearch, isFilter } = filterState;
 
   const filterHouseBasedOnAmenities = (houses) => {
     const res = houses.filter((house) => {
-      if (!amenities[0].value && !amenities[1].value && !amenities[2].value) {
+      if (!furnished && !petAllowed && !sharedAccomodation) {
         return houses;
       }
-
-      const filteredAmenities = house.amenities.filter((amenity, index) => {
-        return (
-          amenity.title === amenities[index].title &&
-          amenity.value === amenities[index].value
-        );
-      });
-      return filteredAmenities.length === 3;
+      return (
+        furnished === house.amenities[0].value &&
+        petAllowed === house.amenities[1].value &&
+        sharedAccomodation === house.amenities[2].value
+      );
     });
 
     return res;
@@ -91,14 +40,79 @@ function Home() {
 
   const filterHouseBasedOnSpec = (houses) => {
     return houses.filter((house) => {
-      return (
+      if (!bedroom && !bathroom) {
+        return true;
+      }
+      if (
         house.spec.bedroom === parseInt(bedroom) &&
         house.spec.bathroom === parseInt(bathroom)
+      ) {
+        return true;
+      }
+      return (
+        (house.spec.bedroom === parseInt(bedroom) && !bathroom) ||
+        (house.spec.bathroom === parseInt(bathroom) && !bedroom)
       );
     });
   };
 
-  const { dispatch } = useContext(UserContext);
+  const filterHouseBasedOnSearchInput = (houses) => {
+    const res = houses.filter((house) => {
+      return house.address.toLowerCase().includes(search.toLowerCase());
+    });
+
+    return res;
+  };
+
+  const filterHouseBasedOnBudget = (houses) => {
+    return houses.filter((house) => {
+      if (!budget) {
+        return house;
+      } else {
+        switch (duration) {
+          case "Year":
+            return (
+              convertToAngka(house.price.year.value) <= convertToAngka(budget)
+            );
+          case "Month":
+            return (
+              convertToAngka(house.price.month.value) <= convertToAngka(budget)
+            );
+          case "Day":
+            return (
+              convertToAngka(house.price.day.value) <= convertToAngka(budget)
+            );
+          default:
+            return false;
+        }
+      }
+    });
+  };
+
+  // filterHouseBasedOnBudget(houses);
+
+  const filterHouse = (houses) => {
+    if (!isFilter && !isSearch) {
+      return houses;
+    }
+
+    const filteredHouseBasedOnSearchInput =
+      filterHouseBasedOnSearchInput(houses);
+
+    const filteredHouseBasedOnAmenities = filterHouseBasedOnAmenities(
+      filteredHouseBasedOnSearchInput
+    );
+    const filteredHouseBasedOnSpec = filterHouseBasedOnSpec(
+      filteredHouseBasedOnAmenities
+    );
+
+    const filteredHouseBasedOnBudget = filterHouseBasedOnBudget(
+      filteredHouseBasedOnSpec
+    );
+    return filteredHouseBasedOnBudget;
+  };
+
+  console.log(filterState);
 
   useEffect(() => {
     const userSession = JSON.parse(sessionStorage.getItem("user"));
@@ -117,26 +131,11 @@ function Home() {
     }
   }, [dispatch]);
 
-  // console.log(filterHouseBasedOnSpec(houses));
-
   return (
     <div className="Home">
-      <Navbar
-        handleSearch={handleSearch}
-        searchText={searchText}
-        searchbar={true}
-      />
+      <Navbar searchbar={true} />
       <div style={{ display: "flex", width: "100%" }}>
-        <Sidebar
-          handleAmenities={handleAmenities}
-          amenities={amenities}
-          handleDuration={handleDuration}
-          duration={duration}
-          handleBathroom={handleBathroom}
-          bathroom={bathroom}
-          handleBedroom={handleBedroom}
-          bedroom={bedroom}
-        />
+        <Sidebar />
         <Content houses={filterHouse(houses)} housesDuration={duration} />
       </div>
     </div>

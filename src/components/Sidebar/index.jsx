@@ -1,17 +1,108 @@
 import styles from "./Sidebar.module.css";
 
 import DateInput from "../../components/DateInput";
+import { useContext, useEffect, useState } from "react";
+import FilterContext from "../../contexts/FilterContext";
+// import { useContext } from "react";
+// import { UserContext } from "../../Contexts/UserContext";
 
-const Sidebar = ({
-  handleAmenities,
-  amenities,
-  handleDuration,
-  duration,
-  handleBedroom,
-  bedroom,
-  handleBathroom,
-  bathroom,
-}) => {
+const Sidebar = () => {
+  const { filterState, filterDispatch } = useContext(FilterContext);
+
+  const [duration, setDuration] = useState("Year");
+  const [bedroom, setBedroom] = useState("");
+  const [bathroom, setBathroom] = useState("");
+  const [budget, setBudget] = useState("");
+  const [amenities, setAmenities] = useState([
+    {
+      title: "Furnished",
+      value: false,
+    },
+    {
+      title: "Pet Allowed",
+      value: false,
+    },
+    {
+      title: "Shared Accomodation",
+      value: false,
+    },
+  ]);
+
+  const handleDuration = (e) => {
+    setDuration(e.target.value);
+  };
+
+  const handleAmenities = (e) => {
+    const newAmenities = [...amenities];
+
+    newAmenities.forEach((amenity) => {
+      if (amenity.title === e.target.value) {
+        amenity.value = !amenity.value;
+      }
+    });
+
+    setAmenities(newAmenities);
+  };
+
+  // console.log(filterState.filter);
+
+  const handleBedroom = (e) => {
+    setBedroom(e.target.value);
+  };
+
+  const handleBathroom = (e) => {
+    setBathroom(e.target.value);
+  };
+
+  const handleBudget = (e) => {
+    setBudget(e.target.value);
+  };
+
+  // console.log(filterState);
+
+  const handleFilter = () => {
+    filterDispatch({
+      type: "FILTERIN",
+      payload: {
+        filter: {
+          duration,
+          bedroom,
+          bathroom,
+          furnished: amenities[0].value,
+          petAllowed: amenities[1].value,
+          sharedAccomodation: amenities[2].value,
+          budget,
+        },
+        isFilter: true,
+      },
+    });
+  };
+  useEffect(() => {
+    if (filterState.isFilter) {
+      console.log("cocok");
+      setDuration(filterState.filter.duration);
+      setBedroom(filterState.filter.bedroom);
+      setBathroom(filterState.filter.bathroom);
+      setBudget(filterState.filter.budget);
+      setAmenities([
+        {
+          title: "Furnished",
+          value: filterState.filter.furnished,
+        },
+        {
+          title: "Pet Allowed",
+          value: filterState.filter.petAllowed,
+        },
+        {
+          title: "Shared Accomodation",
+          value: filterState.filter.sharedAccomodation,
+        },
+      ]);
+    }
+  }, [filterState]);
+
+  // console.log(filterState);
+
   return (
     <div className={styles.sidebar}>
       <div className={styles.duration}>
@@ -68,12 +159,20 @@ const Sidebar = ({
         <p className={styles.budgetTitle}>Budget</p>
         <form className={styles.budgetForm} action="">
           <span>Less than IDR.</span>
-          <input type="number" min="0" step="any" />
+          <input
+            type="number"
+            min="0"
+            step="any"
+            value={budget}
+            onChange={handleBudget}
+          />
         </form>
       </div>
 
       <div className={styles.apply}>
-        <button className={styles.applyButton}>APPLY</button>
+        <button className={styles.applyButton} onClick={handleFilter}>
+          APPLY
+        </button>
       </div>
     </div>
   );

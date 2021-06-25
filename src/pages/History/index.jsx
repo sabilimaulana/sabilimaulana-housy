@@ -1,6 +1,7 @@
 import { useEffect, useContext } from "react";
+import HistoryContent from "../../components/HistoryContent";
 import Navbar from "../../components/Navbar";
-import { UserContext } from "../../Contexts/UserContext";
+import { UserContext } from "../../contexts/UserContext";
 import NotFound from "../NotFound";
 
 const History = () => {
@@ -27,7 +28,7 @@ const History = () => {
     return (
       <>
         <Navbar />
-        History Page
+        <HistoryContent />
       </>
     );
   } else {

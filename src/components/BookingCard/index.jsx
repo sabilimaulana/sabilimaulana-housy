@@ -6,7 +6,7 @@ import ellipseStart from "../../assets/images/ellipse-start.svg";
 import verticalLine from "../../assets/images/line-icon.svg";
 import ellipseEnd from "../../assets/images/ellipse-end.svg";
 
-const BookingCard = ({ button }) => {
+const BookingCard = ({ button, status, invoice }) => {
   return (
     <div
       className={styles.bookingCardWrapper}
@@ -19,7 +19,11 @@ const BookingCard = ({ button }) => {
         <div className={styles.bookingCardHeader}>
           <img src={brandIcon} alt="" />
           <div className={styles.headerTitle}>
-            <h2 className={styles.bookingTitle}>Booking</h2>
+            {invoice ? (
+              <h2 className={styles.bookingTitle}>Invoice</h2>
+            ) : (
+              <h2 className={styles.bookingTitle}>Booking</h2>
+            )}
             <p className={styles.bookingDate}>
               <span>Saturday</span>, 30 March 2020
             </p>
@@ -33,7 +37,13 @@ const BookingCard = ({ button }) => {
               adipisicing elit.
             </p>
             <div className={styles.bookingStatus}>
-              <div className={styles.statusCard}>Waiting Payment</div>
+              {status === "Approve" ? (
+                <div className={styles.approveStatus}>Approve</div>
+              ) : status === "Cancel" ? (
+                <div className={styles.cancelStatus}>Cancel</div>
+              ) : (
+                <div className={styles.waitingStatus}>Waiting Payment</div>
+              )}
             </div>
           </div>
 
@@ -76,6 +86,7 @@ const BookingCard = ({ button }) => {
           <div className={styles.cardContentProof}>
             <div className={styles.imageWrapper}>
               <img src="" alt="" />
+              {status === "Approve" ? "barcode" : "input file"}
             </div>
             <p>Upload payment proof</p>
           </div>
@@ -118,7 +129,17 @@ const BookingCard = ({ button }) => {
             <div className={styles.totalValue}>
               <p className={styles.tableHeader}>&nbsp;</p>
               <p className={styles.totalText}>1 Year</p>
-              <p className={styles.totalPrice}>Rp. 9.000.000</p>
+              <p
+                className={styles.totalPrice}
+                style={{
+                  color:
+                    status === "Approve"
+                      ? "rgb(10, 207, 131)"
+                      : "rgb(255, 7, 66)",
+                }}
+              >
+                Rp. 9.000.000
+              </p>
             </div>
           </div>
         </div>

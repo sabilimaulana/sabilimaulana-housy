@@ -10,17 +10,41 @@ import { useContext, useEffect, useState } from "react";
 import Signin from "../Signin";
 import Signup from "../Signup";
 import UserDropdown from "../UserDropdown";
-import { UserContext } from "../../Contexts/UserContext";
+import { UserContext } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
+import FilterContext from "../../contexts/FilterContext";
 
-const Navbar = ({ handleSearch, searchText, searchbar }) => {
+const Navbar = ({ searchbar }) => {
+  // handleSearch, searchText,
   const { state } = useContext(UserContext);
+
+  const { filterDispatch } = useContext(FilterContext);
+
+  const [searchText, setSearchText] = useState("");
 
   const [signinModalShow, setSigninModalShow] = useState(false);
   const [signupModalShow, setSignupModalShow] = useState(false);
   const [userDropdownShow, setUSerDropdownShow] = useState(false);
 
   useEffect(() => {}, [state]);
+
+  const handleSearch = (e) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleSearchButton = (e) => {
+    e.preventDefault();
+
+    filterDispatch({
+      type: "FILTERIN",
+      payload: {
+        search: searchText,
+        isSearch: true,
+      },
+    });
+  };
+
+  // console.log(filterState);
 
   return (
     <nav className={styles.navbar}>
@@ -37,7 +61,7 @@ const Navbar = ({ handleSearch, searchText, searchbar }) => {
             value={searchText}
           />
           <img src={verticalLine} alt="search border" height="40px" />
-          <button className={styles.searchButton}>
+          <button className={styles.searchButton} onClick={handleSearchButton}>
             <img src={searchIcon} alt="search icon" />
           </button>
         </form>

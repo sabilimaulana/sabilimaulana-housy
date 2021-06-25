@@ -1,7 +1,7 @@
 import { useEffect, useContext } from "react";
 import BookingContent from "../../components/BookingContent";
 import Navbar from "../../components/Navbar";
-import { UserContext } from "../../Contexts/UserContext";
+import { UserContext } from "../../contexts/UserContext";
 import NotFound from "../NotFound";
 
 const Booking = () => {
