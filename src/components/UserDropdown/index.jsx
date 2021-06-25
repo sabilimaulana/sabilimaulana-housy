@@ -62,7 +62,7 @@ const UserDropdown = ({ showDropdown, onHide }) => {
         <div
           className={styles.dropdownMenuWrapper}
           onClick={() => {
-            router.push("/history");
+            router.push("/my-history");
           }}
         >
           <img

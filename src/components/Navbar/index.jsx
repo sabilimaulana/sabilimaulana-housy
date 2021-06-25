@@ -13,7 +13,7 @@ import UserDropdown from "../UserDropdown";
 import { UserContext } from "../../Contexts/UserContext";
 import { Link } from "react-router-dom";
 
-const Navbar = ({ logged, handleSearch, searchText, searchbar }) => {
+const Navbar = ({ handleSearch, searchText, searchbar }) => {
   const { state } = useContext(UserContext);
 
   const [signinModalShow, setSigninModalShow] = useState(false);

@@ -22,16 +22,6 @@ const Signin = ({ showModal, onHide, onHere }) => {
   const handleSignin = (e) => {
     e.preventDefault();
 
-    // dispatch({
-    //   type: "LOGIN",
-    //   payload: {
-    //     id: 1,
-    //     name: "lala",
-    //     username: userInput.username,
-    //     password: userInput.password,
-    //   },
-    // });
-
     const userAuth = users.filter((user) => {
       return (
         user.username === userInput.username &&

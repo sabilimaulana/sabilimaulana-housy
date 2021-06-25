@@ -6,7 +6,24 @@ import verticalLine from "../../assets/images/vertical-line.svg";
 import dropdownIcon from "../../assets/images/dropdown-icon.svg";
 import { useState } from "react";
 
-const OrderModal = ({ showModal, onHide }) => {
+const OrderModal = ({ showModal, onHide, house }) => {
+  const [checkinDate, setCheckinDate] = useState();
+  const [checkoutDate, setCheckouDate] = useState();
+
+  const handleCheckin = (date) => {
+    setCheckinDate(date);
+  };
+
+  const handleCheckout = (date) => {
+    setCheckouDate(date);
+  };
+
+  const handleOrder = (e) => {
+    e.preventDefault();
+    console.log({ house, checkinDate, checkoutDate });
+    onHide();
+  };
+
   return (
     showModal && (
       <>
@@ -19,12 +36,17 @@ const OrderModal = ({ showModal, onHide }) => {
             {/* date input */}
 
             <label className={styles.inputLabel}>Check-in</label>
-            <CheckDate />
+            <CheckDate checkDate={checkinDate} handleCheck={handleCheckin} />
 
             <label className={styles.inputLabel}>Check-out</label>
-            <CheckDate />
+            <CheckDate checkDate={checkoutDate} handleCheck={handleCheckout} />
 
-            <input type="submit" className={styles.orderButton} value="Order" />
+            <input
+              type="submit"
+              className={styles.orderButton}
+              value="Order"
+              onClick={handleOrder}
+            />
           </form>
         </div>
         <div className={styles.background} onClick={onHide}></div>
@@ -33,8 +55,8 @@ const OrderModal = ({ showModal, onHide }) => {
   );
 };
 
-const CheckDate = () => {
-  const [selectedDate, setSelectedDate] = useState();
+const CheckDate = ({ checkDate, handleCheck }) => {
+  // const [selectedDate, setSelectedDate] = useState();
 
   return (
     <div className={styles.dateForm}>
@@ -55,10 +77,8 @@ const CheckDate = () => {
         <DatePicker
           className={styles.datePicker}
           placeholderText="Select your date"
-          selected={selectedDate}
-          onChange={(date) => {
-            setSelectedDate(date);
-          }}
+          selected={checkDate}
+          onChange={handleCheck}
         />
       </div>
     </div>

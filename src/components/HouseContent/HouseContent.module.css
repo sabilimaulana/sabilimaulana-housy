@@ -183,9 +183,10 @@
 }
 
 .descriptionWrapper {
-  height: 144px;
   /* background-color: chartreuse; */
   border-radius: 5px;
+
+  margin-bottom: 50px;
 }
 
 .desc {

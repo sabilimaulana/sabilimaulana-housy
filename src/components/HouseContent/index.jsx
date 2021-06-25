@@ -12,8 +12,6 @@ import { useState } from "react";
 const HouseContent = ({ house }) => {
   const [orderModalShow, setOrderModalShow] = useState(false);
 
-  console.log(orderModalShow);
-
   return (
     <div className={styles.container}>
       <div className={styles.imageWrapper}>
@@ -92,7 +90,24 @@ const HouseContent = ({ house }) => {
           dicta. Laboriosam, soluta! Lorem ipsum dolor sit, amet consectetur
           adipisicing elit. Non asperiores amet autem impedit, vero iure rem
           corrupti neque aliquam quaerat recusandae necessitatibus. Quo,
-          laboriosam cumque quos deleniti dolor odio optio.
+          laboriosam cumque quos deleniti dolor odio optio. Lorem ipsum dolor,
+          sit amet consectetur adipisicing elit. Ullam aperiam aspernatur, unde
+          necessitatibus laboriosam neque ea voluptates asperiores officia odio.
+          Consequatur quia exercitationem accusamus asperiores deleniti hic
+          officiis temporibus? Porro. Lorem ipsum dolor sit amet consectetur
+          adipisicing elit. Neque ex quidem iste ullam, id, repellendus
+          voluptatum voluptatibus, tenetur sapiente eaque fugit adipisci! Sequi
+          doloremque eum magnam in iste, repellendus autem. Lorem ipsum dolor
+          sit amet consectetur adipisicing elit. Dolorem magnam dignissimos
+          error consequuntur aut eaque similique ab repudiandae, voluptates
+          quaerat perferendis qui, numquam iste ad? Fugit id mollitia fugiat
+          maiores. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Voluptatem autem nobis enim animi commodi ipsa nam, corporis
+          temporibus dolorem hic voluptas ducimus inventore fuga eligendi itaque
+          quae perferendis quaerat quo. Lorem ipsum dolor sit amet consectetur
+          adipisicing elit. Sapiente fugit perferendis eius nihil, quas expedita
+          provident temporibus ab molestiae, doloremque explicabo vero a quae
+          beatae.
         </p>
       </div>
 
@@ -107,6 +122,7 @@ const HouseContent = ({ house }) => {
         </button>
       </div>
       <OrderModal
+        house={house}
         showModal={orderModalShow}
         onHide={() => {
           setOrderModalShow(false);
