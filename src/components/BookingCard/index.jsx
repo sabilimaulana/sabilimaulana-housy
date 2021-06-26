@@ -6,7 +6,32 @@ import ellipseStart from "../../assets/images/ellipse-start.svg";
 import verticalLine from "../../assets/images/line-icon.svg";
 import ellipseEnd from "../../assets/images/ellipse-end.svg";
 
-const BookingCard = ({ button, status, invoice }) => {
+const BookingCard = ({
+  button,
+  status,
+  invoice,
+  orderDay,
+  orderDate,
+  orderMonth,
+  orderYear,
+  checkinDate,
+  checkinMonth,
+  checkinYear,
+  checkoutDate,
+  checkoutMonth,
+  checkoutYear,
+  houseName,
+  duration,
+  furnished,
+  petAllowed,
+  sharedAccomodation,
+  address,
+  tenantName,
+  tenantPhone,
+  tenantGender,
+  price,
+}) => {
+  // console.log(house);
   return (
     <div
       className={styles.bookingCardWrapper}
@@ -25,17 +50,15 @@ const BookingCard = ({ button, status, invoice }) => {
               <h2 className={styles.bookingTitle}>Booking</h2>
             )}
             <p className={styles.bookingDate}>
-              <span>Saturday</span>, 30 March 2020
+              <span>{orderDay}</span>{" "}
+              {`, ${orderDate} ${orderMonth} ${orderYear}`}
             </p>
           </div>
         </div>
         <div className={styles.cardContent}>
           <div className={styles.cardContentName}>
-            <h2>House Astina</h2>
-            <p className={styles.houseAddress}>
-              Tambora, Jakarta Barat Lorem, ipsum dolor sit amet consectetur
-              adipisicing elit.
-            </p>
+            <h2>{`House ${houseName}`}</h2>
+            <p className={styles.houseAddress}>{address}</p>
             <div className={styles.bookingStatus}>
               {status === "Approve" ? (
                 <div className={styles.approveStatus}>Approve</div>
@@ -57,12 +80,12 @@ const BookingCard = ({ button, status, invoice }) => {
             <div className={styles.dateWrapper}>
               <div className={styles.checkinWrapper}>
                 <h3>Check-in</h3>
-                <p>30 August 2021</p>
+                <p>{`${checkinDate} ${checkinMonth} ${checkinYear}`}</p>
               </div>
 
               <div className={styles.checkoutWrapper}>
                 <h3>Check-out</h3>
-                <p>30 Septemberre 2022</p>
+                <p>{`${checkoutDate} ${checkoutMonth} ${checkoutYear}`}</p>
               </div>
             </div>
           </div>
@@ -71,15 +94,15 @@ const BookingCard = ({ button, status, invoice }) => {
             <div className={styles.amenities}>
               <h3>Amenities</h3>
               <div>
-                <p>Furnished</p>
-                <p>Pet Allowed</p>
-                <p>Shared Accomodation</p>
+                <p>{furnished && "Furnished"}</p>
+                <p>{petAllowed && "Pet Allowed"}</p>
+                <p>{sharedAccomodation && "Shared Accomodation"}</p>
               </div>
             </div>
 
             <div className={styles.duration}>
               <h3>Type of Rent</h3>
-              <p>Month</p>
+              <p>{duration}</p>
             </div>
           </div>
 
@@ -101,17 +124,17 @@ const BookingCard = ({ button, status, invoice }) => {
 
             <div className={styles.tableColLong}>
               <p className={styles.tableHeader}>Fullname</p>
-              <p className={styles.tableContent}>Sabili Maulana</p>
+              <p className={styles.tableContent}>{tenantName}</p>
             </div>
 
             <div className={styles.tableCol}>
               <p className={styles.tableHeader}>Gender</p>
-              <p className={styles.tableContent}>Male</p>
+              <p className={styles.tableContent}>{tenantGender}</p>
             </div>
 
             <div className={styles.tableColLong}>
               <p className={styles.tableHeader}>Phone</p>
-              <p className={styles.tableContent}>081234567890</p>
+              <p className={styles.tableContent}>{tenantPhone}</p>
             </div>
           </div>
 
@@ -128,7 +151,7 @@ const BookingCard = ({ button, status, invoice }) => {
             </div>
             <div className={styles.totalValue}>
               <p className={styles.tableHeader}>&nbsp;</p>
-              <p className={styles.totalText}>1 Year</p>
+              <p className={styles.totalText}>{`1 ${duration}`}</p>
               <p
                 className={styles.totalPrice}
                 style={{
@@ -138,7 +161,7 @@ const BookingCard = ({ button, status, invoice }) => {
                       : "rgb(255, 7, 66)",
                 }}
               >
-                Rp. 9.000.000
+                {price}
               </p>
             </div>
           </div>

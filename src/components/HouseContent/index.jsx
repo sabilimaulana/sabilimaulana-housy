@@ -8,9 +8,32 @@ import houseThree from "../../assets/images/houses/house-3.svg";
 import houseFour from "../../assets/images/houses/house-4.svg";
 import OrderModal from "../OrderModal";
 import { useState } from "react";
+import { useContext } from "react";
+import FilterContext from "../../contexts/FilterContext";
+import { UserContext } from "../../contexts/UserContext";
 
 const HouseContent = ({ house }) => {
   const [orderModalShow, setOrderModalShow] = useState(false);
+  const { filterState } = useContext(FilterContext);
+  const { state } = useContext(UserContext);
+
+  console.log(state.user.name);
+  // const handleBook = () => {
+  //   if(!state.user){
+  //     set
+  //   }
+  //   setOrderModalShow(true);
+  // };
+
+  let price = "";
+
+  if (filterState.filter.duration === "Day") {
+    price = house.price.day.value;
+  } else if (filterState.filter.duration === "Month") {
+    price = house.price.month.value;
+  } else {
+    price = house.price.year.value;
+  }
 
   return (
     <div className={styles.container}>
@@ -41,7 +64,8 @@ const HouseContent = ({ house }) => {
           <div className={styles.subtitleLeft}>
             <h3
               className={styles.price}
-            >{`Rp. ${house.price.year.value} / Year`}</h3>
+            >{`Rp. ${price} / ${filterState.filter.duration}`}</h3>
+
             <p className={styles.address}>
               {house.address}
               {/* Jl. Elang IV Perum Permata Bintaro Residence, Pondok Aren,
@@ -112,14 +136,18 @@ const HouseContent = ({ house }) => {
       </div>
 
       <div className={styles.book}>
-        <button
-          className={styles.booknow}
-          onClick={() => {
-            setOrderModalShow(true);
-          }}
-        >
-          Book Now
-        </button>
+        {state.user.name === "" ? (
+          <button className={styles.bookguest}>Book Now</button>
+        ) : (
+          <button
+            className={styles.booknow}
+            onClick={() => {
+              setOrderModalShow(true);
+            }}
+          >
+            Book Now
+          </button>
+        )}
       </div>
       <OrderModal
         house={house}
@@ -127,6 +155,8 @@ const HouseContent = ({ house }) => {
         onHide={() => {
           setOrderModalShow(false);
         }}
+        duration={filterState.filter.duration}
+        price={price}
       />
     </div>
   );

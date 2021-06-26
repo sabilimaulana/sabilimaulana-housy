@@ -6,9 +6,10 @@ import { houses } from "../../constants/houses";
 import { UserContext } from "../../contexts/UserContext";
 import { FilterContext } from "../../contexts/FilterContext";
 import { convertToAngka } from "../../utils/moneyConvert.js";
+import OwnerContent from "../../components/OwnerContent";
 
 function Home() {
-  const { dispatch } = useContext(UserContext);
+  const { state, dispatch } = useContext(UserContext);
   const { filterState } = useContext(FilterContext);
 
   const {
@@ -131,15 +132,26 @@ function Home() {
     }
   }, [dispatch]);
 
-  return (
-    <div className="Home">
-      <Navbar searchbar={true} />
-      <div style={{ display: "flex", width: "100%" }}>
-        <Sidebar />
-        <Content houses={filterHouse(houses)} housesDuration={duration} />
-      </div>
-    </div>
-  );
+  console.log(state.user.status);
+
+  if (state.user.status === "owner") {
+    return (
+      <>
+        <Navbar />
+        <OwnerContent />;
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Navbar searchbar={true} />
+        <div style={{ display: "flex", width: "100%" }}>
+          <Sidebar />
+          <Content houses={filterHouse(houses)} housesDuration={duration} />
+        </div>
+      </>
+    );
+  }
 }
 
 export default Home;

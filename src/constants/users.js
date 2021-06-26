@@ -9,6 +9,7 @@ export const users = [
     address: "Tambora",
     phone: "0123456789",
     status: "user",
+    booking: [],
   },
   {
     id: 2,
@@ -20,5 +21,6 @@ export const users = [
     address: "Kemang",
     phone: "0123456789",
     status: "owner",
+    booking: [],
   },
 ];

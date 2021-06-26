@@ -5,10 +5,13 @@ import calendarIcon from "../../assets/images/calendar-icon.svg";
 import verticalLine from "../../assets/images/vertical-line.svg";
 import dropdownIcon from "../../assets/images/dropdown-icon.svg";
 import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
-const OrderModal = ({ showModal, onHide, house }) => {
+const OrderModal = ({ showModal, onHide, house, duration, price }) => {
   const [checkinDate, setCheckinDate] = useState();
   const [checkoutDate, setCheckouDate] = useState();
+  const { state, dispatch } = useContext(UserContext);
 
   const handleCheckin = (date) => {
     setCheckinDate(date);
@@ -20,9 +23,57 @@ const OrderModal = ({ showModal, onHide, house }) => {
 
   const handleOrder = (e) => {
     e.preventDefault();
-    console.log({ house, checkinDate, checkoutDate });
+
+    if (!localStorage.getItem("order")) {
+      localStorage.setItem("order", JSON.stringify([]));
+    }
+
+    const orderLocalStorage = JSON.parse(localStorage.getItem("order"));
+    console.log(orderLocalStorage);
+
+    const orderDetail = {
+      idOrder: 1,
+      orderDuration: duration,
+      price,
+      checkinDate,
+      checkoutDate,
+      house,
+      orderTime: new Date(),
+      user: {
+        id: state.user.id,
+        username: state.user.username,
+        gender: state.user.gender,
+        phone: state.user.phone,
+      },
+    };
+
+    const userBooking = state.user;
+    console.log(userBooking);
+
+    const userSession = JSON.parse(sessionStorage.getItem("user"));
+    userSession.booking.push(orderDetail);
+
+    sessionStorage.setItem(
+      "user",
+      JSON.stringify({
+        ...userSession,
+      })
+    );
+
+    dispatch({
+      type: "LOGIN",
+      payload: {
+        booking: [orderDetail],
+      },
+    });
+
+    orderLocalStorage.push(orderDetail);
+
+    localStorage.setItem("order", JSON.stringify(orderLocalStorage));
+
     onHide();
   };
+  console.log(state.user);
 
   return (
     showModal && (

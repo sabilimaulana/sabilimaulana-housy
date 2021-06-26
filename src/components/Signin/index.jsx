@@ -13,7 +13,7 @@ const Signin = ({ showModal, onHide, onHere }) => {
     password: "",
   });
 
-  const { dispatch } = useContext(UserContext);
+  const { state, dispatch } = useContext(UserContext);
 
   // console.log(state);
 
@@ -42,6 +42,7 @@ const Signin = ({ showModal, onHide, onHere }) => {
           address: userAuth[0].address,
           phone: userAuth[0].phone,
           status: userAuth[0].status,
+          booking: userAuth[0].booking,
         })
       );
 
@@ -58,9 +59,16 @@ const Signin = ({ showModal, onHide, onHere }) => {
             address: userAuth[0].address,
             phone: userAuth[0].phone,
             status: userAuth[0].status,
+            booking: userAuth[0].booking,
           },
         },
       });
+
+      console.log("stata?", state.user);
+
+      if (!localStorage.getItem("order")) {
+        localStorage.setItem("order", JSON.stringify([]));
+      }
 
       setWarning(false);
       onHide();

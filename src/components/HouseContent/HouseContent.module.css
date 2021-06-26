@@ -225,3 +225,24 @@
   cursor: pointer;
   background-color: darkslateblue;
 }
+
+.bookguest {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 213px;
+  height: 50px;
+
+  color: #fff;
+  background-color: grey;
+
+  font-size: 18px;
+  font-weight: 800;
+  border: none;
+
+  border-radius: 5px;
+  text-decoration: none;
+
+  cursor: not-allowed;
+}

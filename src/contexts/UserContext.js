@@ -13,6 +13,7 @@ const initialState = {
     phone: "",
     status: "",
     address: "",
+    booking: [],
   },
   isLogin: false,
 };
@@ -38,6 +39,7 @@ const userReducer = (state, action) => {
           email: "",
           phone: "",
           status: "",
+          booking: [],
         },
         isLogin: false,
       };
