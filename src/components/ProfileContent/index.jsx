@@ -26,7 +26,7 @@ const ProfileContent = ({ state }) => {
           <InfoWrapper
             icon={nameIcon}
             infoTitle="Fullname"
-            infoValue={state.user.name}
+            infoValue={state.user.fullname}
           />
           <InfoWrapper
             icon={mailIcon}

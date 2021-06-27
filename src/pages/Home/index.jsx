@@ -44,6 +44,32 @@ function Home() {
       if (!bedroom && !bathroom) {
         return true;
       }
+
+      console.log(bedroom, bathroom);
+      if (bedroom === "5+" && bathroom === "5+") {
+        return (
+          house.spec.bedroom >= parseInt(bedroom) &&
+          house.spec.bathroom >= parseInt(bathroom)
+        );
+      } else if (bedroom === "5+" && bathroom !== "5+") {
+        // console.log("lala");
+        if (bathroom === "") {
+          return house.spec.bedroom >= parseInt(bedroom);
+        }
+        return (
+          house.spec.bedroom >= parseInt(bedroom) &&
+          house.spec.bathroom === parseInt(bathroom)
+        );
+      } else if (bedroom !== "5+" && bathroom === "5+") {
+        if (bedroom === "") {
+          return house.spec.bathroom >= parseInt(bathroom);
+        }
+        return (
+          house.spec.bedroom === parseInt(bedroom) &&
+          house.spec.bathroom >= parseInt(bathroom)
+        );
+      }
+
       if (
         house.spec.bedroom === parseInt(bedroom) &&
         house.spec.bathroom === parseInt(bathroom)
@@ -113,8 +139,8 @@ function Home() {
     return filteredHouseBasedOnBudget;
   };
 
-  console.log(filterState);
-
+  // console.log(filterState);
+  console.log("code by sabilimaulana");
   useEffect(() => {
     const userSession = JSON.parse(sessionStorage.getItem("user"));
 
@@ -132,7 +158,7 @@ function Home() {
     }
   }, [dispatch]);
 
-  console.log(state.user.status);
+  // console.log(state.user.status);
 
   if (state.user.status === "owner") {
     return (

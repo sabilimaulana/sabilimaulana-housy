@@ -5,7 +5,7 @@ export const UserContext = createContext();
 const initialState = {
   user: {
     id: null,
-    name: "",
+    fullname: "",
     username: "",
     password: "",
     gender: "",
@@ -33,7 +33,7 @@ const userReducer = (state, action) => {
         ...state,
         user: {
           id: null,
-          name: "",
+          fullname: "",
           username: "",
           password: "",
           email: "",

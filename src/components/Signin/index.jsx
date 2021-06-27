@@ -34,7 +34,7 @@ const Signin = ({ showModal, onHide, onHere }) => {
         "user",
         JSON.stringify({
           id: userAuth[0].id,
-          name: userAuth[0].name,
+          fullname: userAuth[0].fullname,
           username: userAuth[0].username,
           password: userAuth[0].password,
           email: userAuth[0].email,
@@ -51,7 +51,7 @@ const Signin = ({ showModal, onHide, onHere }) => {
         payload: {
           user: {
             id: userAuth[0].id,
-            name: userAuth[0].name,
+            fullname: userAuth[0].fullname,
             username: userAuth[0].username,
             password: userAuth[0].password,
             email: userAuth[0].email,
@@ -68,6 +68,10 @@ const Signin = ({ showModal, onHide, onHere }) => {
 
       if (!localStorage.getItem("order")) {
         localStorage.setItem("order", JSON.stringify([]));
+      }
+
+      if (!localStorage.getItem("history")) {
+        localStorage.setItem("history", JSON.stringify([]));
       }
 
       setWarning(false);

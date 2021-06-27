@@ -1,7 +1,7 @@
 export const users = [
   {
     id: 1,
-    name: "lala",
+    fullname: "fulllala",
     username: "lala",
     password: "lili",
     email: "lala@gmail.com",
@@ -13,7 +13,7 @@ export const users = [
   },
   {
     id: 2,
-    name: "owner",
+    fullname: "owner",
     username: "owner",
     password: "owner",
     email: "owner@gmail.com",

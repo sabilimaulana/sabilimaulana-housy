@@ -682,7 +682,7 @@ export const houses = [
     image: houseThree,
     spec: {
       bedroom: 2,
-      bathroom: 2,
+      bathroom: 7,
       sqft: "2,400",
     },
     address: "Jakarta Barat, Tambora",
@@ -877,8 +877,8 @@ export const houses = [
     name: "Resistance",
     image: houseEight,
     spec: {
-      bedroom: 2,
-      bathroom: 2,
+      bedroom: 7,
+      bathroom: 4,
       sqft: "2,400",
     },
     address: "Jakarta Pusat, Kemayoran",
@@ -1203,6 +1203,45 @@ export const houses = [
       {
         title: "Pet Allowed",
         value: true,
+      },
+      {
+        title: "Shared Accomodation",
+        value: true,
+      },
+    ],
+    price: {
+      day: {
+        title: "Day",
+        value: "17.000",
+      },
+      month: {
+        title: "Month",
+        value: "500.000",
+      },
+      year: {
+        title: "Year",
+        value: "6.000.000",
+      },
+    },
+  },
+  {
+    id: 32,
+    name: "Loki",
+    image: houseOne,
+    spec: {
+      bedroom: 7,
+      bathroom: 6,
+      sqft: "3,800",
+    },
+    address: "Tangerang Selatan, Pondok Aren",
+    amenities: [
+      {
+        title: "Furnished",
+        value: true,
+      },
+      {
+        title: "Pet Allowed",
+        value: false,
       },
       {
         title: "Shared Accomodation",

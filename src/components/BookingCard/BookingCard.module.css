@@ -97,7 +97,8 @@
 
 .waitingStatus,
 .cancelStatus,
-.approveStatus {
+.approveStatus,
+.waitingPaymentStatus {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -122,6 +123,12 @@
 .approveStatus {
   background: rgba(10, 207, 131, 0.1);
   color: rgb(10, 207, 131);
+}
+
+.waitingPaymentStatus {
+  background: rgba(236, 122, 122, 0.1);
+
+  color: rgb(236, 122, 122);
 }
 
 .cardContentDate {

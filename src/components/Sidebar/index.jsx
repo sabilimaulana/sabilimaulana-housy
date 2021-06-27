@@ -77,9 +77,34 @@ const Sidebar = () => {
       },
     });
   };
+
+  const handleFilterOut = () => {
+    setDuration("Year");
+    setBedroom("");
+    setBathroom("");
+    setBudget("");
+    setAmenities([
+      {
+        title: "Furnished",
+        value: false,
+      },
+      {
+        title: "Pet Allowed",
+        value: false,
+      },
+      {
+        title: "Shared Accomodation",
+        value: false,
+      },
+    ]);
+    filterDispatch({
+      type: "FILTEROUT",
+    });
+  };
+
   useEffect(() => {
     if (filterState.isFilter) {
-      console.log("cocok");
+      // console.log("cocok");
       setDuration(filterState.filter.duration);
       setBedroom(filterState.filter.bedroom);
       setBathroom(filterState.filter.bathroom);
@@ -170,6 +195,9 @@ const Sidebar = () => {
       </div>
 
       <div className={styles.apply}>
+        <button className={styles.filterButton} onClick={handleFilterOut}>
+          Clear Filter
+        </button>
         <button className={styles.applyButton} onClick={handleFilter}>
           APPLY
         </button>

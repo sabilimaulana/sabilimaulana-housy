@@ -25,6 +25,7 @@ const History = () => {
   }, [dispatch]);
 
   if (state.isLogin) {
+    // console.log(state);
     return (
       <>
         <Navbar />

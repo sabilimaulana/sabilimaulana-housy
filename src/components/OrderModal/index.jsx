@@ -38,13 +38,14 @@ const OrderModal = ({ showModal, onHide, house, duration, price }) => {
     localStorage.setItem("ticket", JSON.stringify(ticketLocalStorage));
     //sampai sini
 
-    if (!localStorage.getItem("order")) {
-      localStorage.setItem("order", JSON.stringify([]));
-    }
-    const orderLocalStorage = JSON.parse(localStorage.getItem("order"));
+    // if (!localStorage.getItem("order")) { pernah aktif
+    //   localStorage.setItem("order", JSON.stringify([]));
+    // }
+    // const orderLocalStorage = JSON.parse(localStorage.getItem("order")); pernah aktif
 
     const orderDetail = {
       idOrder: randomTicket,
+      status: "Waiting Payment",
       orderDuration: duration,
       price,
       checkinDate,
@@ -54,6 +55,7 @@ const OrderModal = ({ showModal, onHide, house, duration, price }) => {
       user: {
         id: state.user.id,
         username: state.user.username,
+        fullname: state.user.fullname,
         gender: state.user.gender,
         phone: state.user.phone,
       },
@@ -79,9 +81,8 @@ const OrderModal = ({ showModal, onHide, house, duration, price }) => {
       },
     });
 
-    orderLocalStorage.push(orderDetail);
-
-    localStorage.setItem("order", JSON.stringify(orderLocalStorage));
+    // orderLocalStorage.push(orderDetail); pernah aktif
+    // localStorage.setItem("order", JSON.stringify(orderLocalStorage)); pernah aktif
 
     onHide();
   };

@@ -30,3 +30,24 @@
 
   padding: 26px 29px;
 }
+
+@media (max-width: 1800px) {
+  .content {
+    /* grid-template-areas: "card space card space card" "card space card space card" "card space card space card"; */
+    grid-template-columns: 290px 290px 290px;
+  }
+}
+
+@media (max-width: 1468px) {
+  .content {
+    /* grid-template-areas: "card space card space card" "card space card space card" "card space card space card"; */
+    grid-template-columns: 290px 290px;
+  }
+}
+
+@media (max-width: 968px) {
+  .content {
+    /* grid-template-areas: "card space card space card" "card space card space card" "card space card space card"; */
+    grid-template-columns: 290px;
+  }
+}

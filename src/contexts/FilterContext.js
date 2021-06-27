@@ -34,7 +34,7 @@ const filterReducer = (state, action) => {
         isSearch: false,
 
         filter: {
-          duration: "",
+          duration: "Year",
           bedroom: "",
           bathroom: "",
           furnished: false,

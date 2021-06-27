@@ -1,11 +1,12 @@
-import { useContext } from "react";
-import { UserContext } from "../../contexts/UserContext";
+// import { useContext } from "react";
+// import { UserContext } from "../../contexts/UserContext";
 import BookingCard from "../BookingCard";
 import styles from "./BookingContent.module.css";
 
 const BookingContent = () => {
-  const { state } = useContext(UserContext);
-  const { user } = state;
+  // const { state } = useContext(UserContext);
+  // const { user } = state;
+  const userSession = JSON.parse(sessionStorage.getItem("user"));
 
   const convertDayToString = (number) => {
     const day = [
@@ -45,7 +46,7 @@ const BookingContent = () => {
   return (
     <div className={styles.container}>
       <div className={styles.bookingWrapper}>
-        {user.booking.map((booking, index) => {
+        {userSession.booking.map((booking, index) => {
           return (
             <BookingCard
               button
@@ -69,15 +70,7 @@ const BookingContent = () => {
                 new Date(booking.checkoutDate).getMonth()
               )}
               checkoutYear={new Date(booking.checkoutDate).getFullYear()}
-              duration={booking.orderDuration}
-              furnished={booking.house.amenities[0].value}
-              petAllowed={booking.house.amenities[1].value}
-              sharedAccomodation={booking.house.amenities[2].value}
-              address={booking.house.address}
-              tenantName={booking.user.username}
-              tenantPhone={booking.user.phone}
-              tenantGender={booking.user.gender}
-              price={booking.price}
+              orderDetail={booking}
             />
           );
         })}
