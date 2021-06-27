@@ -30,12 +30,16 @@ const BookingCard = ({
   tenantPhone,
   tenantGender,
   price,
+  marginBottom,
 }) => {
   // console.log(house);
   return (
     <div
       className={styles.bookingCardWrapper}
-      style={{ minHeight: button ? "482px" : "410px" }}
+      style={{
+        minHeight: button ? "482px" : "410px",
+        marginBottom: !marginBottom && "0px",
+      }}
     >
       <div
         className={styles.bookingCard}
@@ -176,6 +180,10 @@ const BookingCard = ({
       )}
     </div>
   );
+};
+
+BookingCard.defaultProps = {
+  marginBottom: true,
 };
 
 export default BookingCard;

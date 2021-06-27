@@ -6,8 +6,8 @@ const HistoryContent = () => {
     <div className={styles.container}>
       <div className={styles.historyWrapper}>
         <BookingCard status="Approve" invoice />
-        <BookingCard status="Cancel" />
-        <BookingCard />
+        {/* <BookingCard status="Cancel" />
+        <BookingCard /> */}
       </div>
     </div>
   );

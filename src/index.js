@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import Booking from "./pages/Booking";
 import History from "./pages/History";
 import { FilterContextProvider } from "./contexts/FilterContext";
+import AddProperty from "./pages/AddProperty";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -38,6 +39,9 @@ ReactDOM.render(
             </Route>
             <Route exact path="/my-history">
               <History />
+            </Route>
+            <Route exact path="/add-property">
+              <AddProperty />
             </Route>
             <Route>
               <NotFound />

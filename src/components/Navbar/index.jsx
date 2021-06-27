@@ -10,9 +10,12 @@ import { useContext, useEffect, useState } from "react";
 import Signin from "../Signin";
 import Signup from "../Signup";
 import UserDropdown from "../UserDropdown";
+// import OwnerDropdown from "../OwnerDropdown";
+
 import { UserContext } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
 import FilterContext from "../../contexts/FilterContext";
+import OwnerDropdown from "../OwnerDropdown";
 
 const Navbar = ({ searchbar }) => {
   // handleSearch, searchText,
@@ -24,7 +27,8 @@ const Navbar = ({ searchbar }) => {
 
   const [signinModalShow, setSigninModalShow] = useState(false);
   const [signupModalShow, setSignupModalShow] = useState(false);
-  const [userDropdownShow, setUSerDropdownShow] = useState(false);
+  const [userDropdownShow, setUserDropdownShow] = useState(false);
+  const [ownerDropdownShow, setOwnerDropdownShow] = useState(false);
 
   useEffect(() => {}, [state]);
 
@@ -60,6 +64,7 @@ const Navbar = ({ searchbar }) => {
             onChange={handleSearch}
             value={searchText}
           />
+
           <img src={verticalLine} alt="search border" height="40px" />
           <button className={styles.searchButton} onClick={handleSearchButton}>
             <img src={searchIcon} alt="search icon" />
@@ -68,18 +73,33 @@ const Navbar = ({ searchbar }) => {
       )}
 
       {state.isLogin ? (
-        <>
-          <div
-            className={styles.user}
-            onClick={() => setUSerDropdownShow(!userDropdownShow)}
-          >
-            <img src={userIcon} alt="user" height="50px" />
-          </div>
-          <UserDropdown
-            showDropdown={userDropdownShow}
-            onHide={() => setUSerDropdownShow(false)}
-          />
-        </>
+        state.user.status === "owner" ? (
+          <>
+            <div
+              className={styles.user}
+              onClick={() => setOwnerDropdownShow(!ownerDropdownShow)}
+            >
+              <img src={userIcon} alt="owner" height="50px" />
+            </div>
+            <OwnerDropdown
+              showDropdown={ownerDropdownShow}
+              onHide={() => setOwnerDropdownShow(false)}
+            />
+          </>
+        ) : (
+          <>
+            <div
+              className={styles.user}
+              onClick={() => setUserDropdownShow(!userDropdownShow)}
+            >
+              <img src={userIcon} alt="user" height="50px" />
+            </div>
+            <UserDropdown
+              showDropdown={userDropdownShow}
+              onHide={() => setUserDropdownShow(false)}
+            />
+          </>
+        )
       ) : (
         <div className={styles.signWrapper}>
           <button

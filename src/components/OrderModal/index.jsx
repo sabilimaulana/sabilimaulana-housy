@@ -24,15 +24,27 @@ const OrderModal = ({ showModal, onHide, house, duration, price }) => {
   const handleOrder = (e) => {
     e.preventDefault();
 
+    //generate ticket
+    if (!localStorage.getItem("ticket")) {
+      localStorage.setItem(
+        "ticket",
+        JSON.stringify(Array.from(Array(1000).keys()))
+      );
+    }
+    const ticketLocalStorage = JSON.parse(localStorage.getItem("ticket"));
+    const randomIndex = Math.floor(Math.random() * ticketLocalStorage.length);
+    const randomTicket = ticketLocalStorage[randomIndex];
+    ticketLocalStorage.splice(randomIndex, 1);
+    localStorage.setItem("ticket", JSON.stringify(ticketLocalStorage));
+    //sampai sini
+
     if (!localStorage.getItem("order")) {
       localStorage.setItem("order", JSON.stringify([]));
     }
-
     const orderLocalStorage = JSON.parse(localStorage.getItem("order"));
-    console.log(orderLocalStorage);
 
     const orderDetail = {
-      idOrder: 1,
+      idOrder: randomTicket,
       orderDuration: duration,
       price,
       checkinDate,
