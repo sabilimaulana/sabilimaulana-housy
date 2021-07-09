@@ -118,6 +118,58 @@
   cursor: pointer;
 }
 
+.boxFileWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /* background-color: salmon; */
+  width: 100%;
+}
+
+.boxFile {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  text-align: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 3px 3px 5px 1px #ccc; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+.boxFile input {
+  display: none;
+}
+
+.boxFile p {
+  margin-bottom: 10px;
+}
+
+.uploadField {
+  width: 200px;
+  height: 200px;
+  border: 1px dashed black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+.uploadField:hover {
+  opacity: 0.8;
+}
+
+.uploadField label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
 .saveButton {
   margin: 60px auto 0 auto;
   width: 300px;
@@ -133,4 +185,35 @@
 
 .saveButton:hover {
   background-color: darkslateblue;
+}
+
+.uploadedImage {
+  width: 198px;
+  height: 198px;
+  object-fit: cover;
+  /* border: 1px dashed black; */
+  border-radius: 20px;
+}
+
+.imagePreview {
+  position: relative;
+  display: flex;
+}
+
+.closeButton {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  opacity: 0.5;
+}
+
+.warning {
+  text-align: center;
+  position: relative;
+  color: red;
+  top: 40px;
 }

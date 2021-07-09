@@ -1,5 +1,6 @@
 import styles from "./Content.module.css";
 import HouseCard from "../HouseCard";
+import { convertToRupiah } from "../../utils/moneyConvert";
 
 const Content = ({ houses, housesDuration }) => {
   let priceDuration = "";
@@ -10,24 +11,23 @@ const Content = ({ houses, housesDuration }) => {
         {houses.map((house, index) => {
           switch (housesDuration) {
             case "Day":
-              priceDuration = house.price.day.value;
+              priceDuration = house.dayPrice;
               break;
             case "Month":
-              priceDuration = house.price.month.value;
+              priceDuration = house.monthPrice;
               break;
             default:
-              priceDuration = house.price.year.value;
+              priceDuration = house.yearPrice;
           }
 
           return (
             <HouseCard
               key={index}
               id={house.id}
-              houseImage={house.image}
-              price={`Rp. ${priceDuration} / ${housesDuration}`}
-              houseSpec={`${house.spec.bedroom} Beds, ${house.spec.bathroom} Baths, ${house.spec.sqft}sqft`}
+              price={`${convertToRupiah(priceDuration)} / ${housesDuration}`}
+              houseSpec={`${house.bedroom} Beds, ${house.bathroom} Baths, ${house.area} sqft`}
               houseAddress={house.address}
-              amenities={house.amenities}
+              house={house}
             />
           );
         })}

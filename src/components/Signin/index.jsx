@@ -2,88 +2,59 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Signin.module.css";
 
-import { users } from "../../constants/users";
+// import { users } from "../../constants/users";
 import { UserContext } from "../../contexts/UserContext";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import { Modal, Button } from "react-bootstrap";
+import axios from "axios";
 
 const Signin = ({ showModal, onHide, onHere }) => {
+  // const [user, setUser] = useState({});
   const [userInput, setUserInput] = useState({
     username: "",
     password: "",
   });
 
-  const { state, dispatch } = useContext(UserContext);
+  const { dispatch } = useContext(UserContext);
 
   // console.log(state);
 
-  const [warning, setWarning] = useState(false);
+  const [warning, setWarning] = useState("");
 
-  const handleSignin = (e) => {
+  const handleSignin = async (e) => {
     e.preventDefault();
 
-    const userAuth = users.filter((user) => {
-      return (
-        user.username === userInput.username &&
-        user.password === userInput.password
-      );
-    });
-
-    if (userAuth.length > 0) {
-      sessionStorage.setItem(
-        "user",
-        JSON.stringify({
-          id: userAuth[0].id,
-          fullname: userAuth[0].fullname,
-          username: userAuth[0].username,
-          password: userAuth[0].password,
-          email: userAuth[0].email,
-          gender: userAuth[0].gender,
-          address: userAuth[0].address,
-          phone: userAuth[0].phone,
-          status: userAuth[0].status,
-          booking: userAuth[0].booking,
-        })
-      );
-
-      dispatch({
-        type: "LOGIN",
-        payload: {
-          user: {
-            id: userAuth[0].id,
-            fullname: userAuth[0].fullname,
-            username: userAuth[0].username,
-            password: userAuth[0].password,
-            email: userAuth[0].email,
-            gender: userAuth[0].gender,
-            address: userAuth[0].address,
-            phone: userAuth[0].phone,
-            status: userAuth[0].status,
-            booking: userAuth[0].booking,
-          },
-        },
+    try {
+      const result = await axios.post("http://localhost:8080/api/v1/signin", {
+        username: userInput.username,
+        password: userInput.password.toString(),
       });
 
-      console.log("stata?", state.user);
+      console.log(result);
 
-      if (!localStorage.getItem("order")) {
-        localStorage.setItem("order", JSON.stringify([]));
+      if (result.data.hasOwnProperty("token")) {
+        setWarning("");
+        setUserInput({ username: "", password: "" });
+        sessionStorage.setItem("token", result.data.token);
+
+        const user = await axios.get(
+          "http://localhost:8080/api/v1/user/profile",
+          { headers: { Authorization: `Bearer ${result.data.token}` } }
+        );
+
+        // console.log(user);
+        dispatch({
+          type: "LOGIN",
+          payload: {
+            user: user.data.data,
+          },
+        });
+
+        onHide();
+      } else {
+        setWarning(result.data.message);
       }
-
-      if (!localStorage.getItem("history")) {
-        localStorage.setItem("history", JSON.stringify([]));
-      }
-
-      setWarning(false);
-      onHide();
-
-      // localStorage.setItem("userData", JSON.stringify(userAuth[0]));
-      // console.log("success");
-    } else {
-      setWarning(true);
+    } catch (error) {
+      setWarning(error.response.data.message);
     }
-
-    // // localStorage.setItem("password", password);
   };
 
   return (
@@ -125,13 +96,9 @@ const Signin = ({ showModal, onHide, onHere }) => {
               />
             </Link>
 
-            {warning && (
-              <div className={styles.centerWrapper}>
-                <span className={styles.warning}>
-                  Maaf data yang anda masukkan tidak terdaftar
-                </span>
-              </div>
-            )}
+            <div className={styles.centerWrapper}>
+              <span className={styles.warning}>{warning}</span>
+            </div>
 
             <div className={styles.centerWrapper}>
               <p className={styles.signupText}>

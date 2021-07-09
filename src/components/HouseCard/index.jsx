@@ -1,21 +1,15 @@
 import { Link } from "react-router-dom";
 import AmenityCard from "../AmenityCard";
 import styles from "./HouseCard.module.css";
+import houseIcon from "../../assets/images/house-icon.png";
 
-const HouseCard = ({
-  id,
-  houseImage,
-  price,
-  houseSpec,
-  houseAddress,
-  amenities,
-}) => {
+const HouseCard = ({ id, price, houseSpec, houseAddress, house }) => {
   return (
     <Link to={`/house-detail/${id}`} className={styles.link}>
       <div className={styles.houseCard}>
         <img
           className={styles.houseImg}
-          src={houseImage}
+          src={house.urlFirstImage ? house.urlFirstImage : houseIcon}
           alt="house"
           width="270px"
         />
@@ -23,13 +17,19 @@ const HouseCard = ({
         <p className={styles.houseSpec}>{houseSpec}</p>
         <p className={styles.houseAddress}>{houseAddress}</p>
         <div className={styles.amenities}>
-          {amenities.map((amenity, index) => {
+          {house.furnished === "true" && <AmenityCard amenity="Furnished" />}
+          {house.petAllowed === "true" && <AmenityCard amenity="Pet Allowed" />}
+          {house.sharedAccomodation === "true" && (
+            <AmenityCard amenity="Shared Accomodation" />
+          )}
+
+          {/* {amenities.map((amenity, index) => {
             return (
               amenity.value && (
                 <AmenityCard key={index} amenity={amenity.title} />
               )
             );
-          })}
+          })} */}
         </div>
       </div>
     </Link>

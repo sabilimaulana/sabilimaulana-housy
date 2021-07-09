@@ -57,4 +57,8 @@
   font-weight: 600 !important;
 }
 
-/* .incomeTable tr */
+.attachment {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}

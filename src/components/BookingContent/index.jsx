@@ -1,13 +1,7 @@
-// import { useContext } from "react";
-// import { UserContext } from "../../contexts/UserContext";
 import BookingCard from "../BookingCard";
 import styles from "./BookingContent.module.css";
 
-const BookingContent = () => {
-  // const { state } = useContext(UserContext);
-  // const { user } = state;
-  const userSession = JSON.parse(sessionStorage.getItem("user"));
-
+const BookingContent = ({ order }) => {
   const convertDayToString = (number) => {
     const day = [
       "Sunday",
@@ -46,31 +40,30 @@ const BookingContent = () => {
   return (
     <div className={styles.container}>
       <div className={styles.bookingWrapper}>
-        {userSession.booking.map((booking, index) => {
+        {order.map((order, index) => {
+          // console.log(new Date(order.checkin));
           return (
             <BookingCard
               button
               key={index}
-              orderDay={convertDayToString(
-                new Date(booking.orderTime).getDay()
-              )}
-              orderDate={new Date(booking.orderTime).getDate()}
+              orderDay={convertDayToString(new Date(order.createdAt).getDay())}
+              orderDate={new Date(order.createdAt).getDate()}
               orderMonth={convertMonthToString(
-                new Date(booking.orderTime).getMonth()
+                new Date(order.createdAt).getMonth()
               )}
-              orderYear={new Date(booking.orderTime).getFullYear()}
-              houseName={booking.house.name}
-              checkinDate={new Date(booking.checkinDate).getDate()}
+              orderYear={new Date(order.createdAt).getFullYear()}
+              houseName={order.Property.propertyName}
+              checkinDate={new Date(order.checkin).getDate()}
               checkinMonth={convertMonthToString(
-                new Date(booking.checkinDate).getMonth()
+                new Date(order.checkin).getMonth()
               )}
-              checkinYear={new Date(booking.checkinDate).getFullYear()}
-              checkoutDate={new Date(booking.checkoutDate).getDate()}
+              checkinYear={new Date(order.checkin).getFullYear()}
+              checkoutDate={new Date(order.checkout).getDate()}
               checkoutMonth={convertMonthToString(
-                new Date(booking.checkoutDate).getMonth()
+                new Date(order.checkout).getMonth()
               )}
-              checkoutYear={new Date(booking.checkoutDate).getFullYear()}
-              orderDetail={booking}
+              checkoutYear={new Date(order.checkout).getFullYear()}
+              orderDetail={order}
             />
           );
         })}

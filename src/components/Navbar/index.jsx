@@ -5,7 +5,7 @@ import styles from "./Navbar.module.css";
 import brandIcon from "../../assets/images/brand-icon.svg";
 import searchIcon from "../../assets/images/search-icon.svg";
 import verticalLine from "../../assets/images/vertical-line.svg";
-import userIcon from "../../assets/images/user-picture.svg";
+import manUser from "../../assets/images/man-user.png";
 import { useContext, useEffect, useState } from "react";
 import Signin from "../Signin";
 import Signup from "../Signup";
@@ -73,13 +73,17 @@ const Navbar = ({ searchbar }) => {
       )}
 
       {state.isLogin ? (
-        state.user.status === "owner" ? (
+        state.user.listAs === "Owner" ? (
           <>
             <div
               className={styles.user}
               onClick={() => setOwnerDropdownShow(!ownerDropdownShow)}
             >
-              <img src={userIcon} alt="owner" height="50px" />
+              {state.user.urlImage === "" ? (
+                <img src={manUser} alt="user" height="50px" />
+              ) : (
+                <img src={state.user.urlImage} alt="user" height="50px" />
+              )}
             </div>
             <OwnerDropdown
               showDropdown={ownerDropdownShow}
@@ -92,7 +96,11 @@ const Navbar = ({ searchbar }) => {
               className={styles.user}
               onClick={() => setUserDropdownShow(!userDropdownShow)}
             >
-              <img src={userIcon} alt="user" height="50px" />
+              {state.user.urlImage === "" ? (
+                <img src={manUser} alt="user" height="50px" />
+              ) : (
+                <img src={state.user.urlImage} alt="user" height="50px" />
+              )}
             </div>
             <UserDropdown
               showDropdown={userDropdownShow}

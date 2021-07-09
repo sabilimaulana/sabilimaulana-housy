@@ -3,25 +3,29 @@ import HistoryContent from "../../components/HistoryContent";
 import Navbar from "../../components/Navbar";
 import { UserContext } from "../../contexts/UserContext";
 import NotFound from "../NotFound";
-
+import axios from "axios";
 const History = () => {
   const { state, dispatch } = useContext(UserContext);
 
   useEffect(() => {
-    const userSession = JSON.parse(sessionStorage.getItem("user"));
+    const getUser = async () => {
+      const token = sessionStorage.getItem("token");
+      if (token) {
+        const user = await axios.get(
+          "http://localhost:8080/api/v1/user/profile",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
 
-    if (userSession) {
-      dispatch({
-        type: "LOGIN",
-        payload: {
-          user: userSession,
-        },
-      });
-    } else {
-      dispatch({
-        type: "LOGOUT",
-      });
-    }
+        dispatch({
+          type: "LOGIN",
+          payload: {
+            user: user.data.data,
+          },
+        });
+      }
+    };
+
+    getUser();
   }, [dispatch]);
 
   if (state.isLogin) {

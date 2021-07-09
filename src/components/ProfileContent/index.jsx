@@ -8,15 +8,37 @@ import genderIcon from "../../assets/images/profile/gender-icon.svg";
 import phoneIcon from "../../assets/images/profile/phone-icon.svg";
 import addressIcon from "../../assets/images/profile/address-icon.svg";
 
-import profilePhoto from "../../assets/images/profile/profile-photo.svg";
-
+import manUser from "../../assets/images/man-user.png";
+import axios from "axios";
 import ChangePasswordModal from "../ChangePasswordModal";
 import { useState } from "react";
 
 const ProfileContent = ({ state }) => {
   const [changePasswordModalShow, setChangePasswordModalShow] = useState(false);
 
-  console.log(state);
+  const handlePicture = (e) => {
+    var bodyForm = new FormData();
+
+    const token = sessionStorage.getItem("token");
+    bodyForm.append("profilePicture", e.target.files[0]);
+    axios({
+      method: "PATCH",
+      url: "http://localhost:8080/api/v1/user/profile-picture/",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+      data: bodyForm,
+    })
+      .then((response) => {
+        console.log(response);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -54,7 +76,7 @@ const ProfileContent = ({ state }) => {
           <InfoWrapper
             icon={statusIcon}
             infoTitle="Status"
-            infoValue={state.user.status === "user" ? "Tenant" : "Owner"}
+            infoValue={state.user.listAs === "Tenant" ? "Tenant" : "Owner"}
           />
           <InfoWrapper
             icon={genderIcon}
@@ -73,14 +95,22 @@ const ProfileContent = ({ state }) => {
           />
         </div>
         <div className={styles.imageWrapper}>
-          <img
-            className={styles.profileImage}
-            src={profilePhoto}
-            alt="profile"
-          />
+          {state.user.urlImage === "" ? (
+            <img className={styles.profileImage} src={manUser} alt="profile" />
+          ) : (
+            <img
+              className={styles.profileImage}
+              src={state.user.urlImage}
+              alt="profile"
+            />
+          )}
 
           <label className={styles.changePhotoButton}>
-            <input type="file" className={styles.fileInput} />
+            <input
+              type="file"
+              className={styles.fileInput}
+              onChange={handlePicture}
+            />
             <span className={styles.fileInputText}>Change Photo Profile</span>
           </label>
         </div>

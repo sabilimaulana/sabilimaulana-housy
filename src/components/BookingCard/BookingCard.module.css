@@ -1,5 +1,6 @@
 .bookingCardWrapper {
   min-height: 482px;
+  width: 1040px;
 
   margin-bottom: 70px;
 }
@@ -206,6 +207,42 @@
 
   object-fit: cover;
   background-color: lightgray;
+}
+
+.uploadField {
+  width: 140px;
+  height: 140px;
+  border: 1px dashed;
+  border-radius: 5px;
+}
+.uploadField label {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.uploadField input {
+  display: none;
+}
+
+.imagePreview {
+  height: 140px;
+  width: 140px;
+}
+
+.uploadedImage {
+  height: 140px;
+  width: 140px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.closeButton {
+  position: relative;
+  top: -140px;
+  right: -118px;
 }
 
 .cardContentProof p {

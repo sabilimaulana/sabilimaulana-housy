@@ -1,38 +1,41 @@
-import { useContext } from "react";
+import { useEffect, useState } from "react";
 import BookingCard from "../BookingCard";
 import styles from "./HistoryContent.module.css";
-import { UserContext } from "../../contexts/UserContext";
+import axios from "axios";
 
-const HistoryContent = ({ username }) => {
-  const { state } = useContext(UserContext);
-  const historyLocalStorage = JSON.parse(localStorage.getItem("history"));
-  if (state.user.status === "Tenant") {
-  }
-  const history = historyLocalStorage.filter((item) => {
-    return item.user.username === state.user.username;
-  });
+const HistoryContent = () => {
+  const [histories, setHistories] = useState([]);
 
-  if (state.user.status === "Tenant") {
-    return (
-      <div className={styles.container}>
-        <div className={styles.historyWrapper}>
-          {history.map((item, index) => {
-            return <BookingCard invoice orderDetail={item} />;
-          })}
-        </div>
+  useEffect(() => {
+    const getHistories = async () => {
+      try {
+        const token = sessionStorage.getItem("token");
+
+        const result = await axios({
+          method: "GET",
+          url: "http://localhost:8080/api/v1/transactions/history",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setHistories(result.data.data.reverse());
+      } catch (error) {
+        console.log(error.data);
+      }
+    };
+
+    getHistories();
+  }, []);
+  return (
+    <div className={styles.container}>
+      <div className={styles.historyWrapper}>
+        {histories.map((item, index) => {
+          return <BookingCard invoice orderDetail={item} key={index} />;
+        })}
       </div>
-    );
-  } else {
-    return (
-      <div className={styles.container}>
-        <div className={styles.historyWrapper}>
-          {historyLocalStorage.map((item, index) => {
-            return <BookingCard invoice orderDetail={item} />;
-          })}
-        </div>
-      </div>
-    );
-  }
+    </div>
+  );
 };
 
 export default HistoryContent;

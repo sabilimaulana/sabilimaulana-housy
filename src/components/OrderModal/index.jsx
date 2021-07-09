@@ -1,41 +1,55 @@
 import DatePicker from "react-datepicker";
+import axios from "axios";
+import { useState, useContext } from "react";
+
 import styles from "./orderModal.module.css";
 
 import calendarIcon from "../../assets/images/calendar-icon.svg";
 import verticalLine from "../../assets/images/vertical-line.svg";
 import dropdownIcon from "../../assets/images/dropdown-icon.svg";
-import { useState } from "react";
-import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 
 const OrderModal = ({ showModal, onHide, house, duration, price }) => {
   const [checkinDate, setCheckinDate] = useState();
   const [checkoutDate, setCheckouDate] = useState();
-  const { state, dispatch } = useContext(UserContext);
+  const { state } = useContext(UserContext);
+
+  const addDays = (date, days) => {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  };
 
   const handleCheckin = (date) => {
     setCheckinDate(date);
+    if (duration === "Day") {
+      setCheckouDate(addDays(date, 1));
+    } else if (duration === "Month") {
+      setCheckouDate(addDays(date, 31));
+    } else {
+      setCheckouDate(addDays(date, 365));
+    }
   };
 
   const handleCheckout = (date) => {
     setCheckouDate(date);
   };
 
-  const handleOrder = (e) => {
+  const handleOrder = async (e) => {
     e.preventDefault();
 
     //generate ticket
-    if (!localStorage.getItem("ticket")) {
-      localStorage.setItem(
-        "ticket",
-        JSON.stringify(Array.from(Array(1000).keys()))
-      );
-    }
-    const ticketLocalStorage = JSON.parse(localStorage.getItem("ticket"));
-    const randomIndex = Math.floor(Math.random() * ticketLocalStorage.length);
-    const randomTicket = ticketLocalStorage[randomIndex];
-    ticketLocalStorage.splice(randomIndex, 1);
-    localStorage.setItem("ticket", JSON.stringify(ticketLocalStorage));
+    // if (!localStorage.getItem("ticket")) {
+    //   localStorage.setItem(
+    //     "ticket",
+    //     JSON.stringify(Array.from(Array(1000).keys()))
+    //   );
+    // }
+    // const ticketLocalStorage = JSON.parse(localStorage.getItem("ticket"));
+    // const randomIndex = Math.floor(Math.random() * ticketLocalStorage.length);
+    // const randomTicket = ticketLocalStorage[randomIndex];
+    // ticketLocalStorage.splice(randomIndex, 1);
+    // localStorage.setItem("ticket", JSON.stringify(ticketLocalStorage));
     //sampai sini
 
     // if (!localStorage.getItem("order")) { pernah aktif
@@ -43,50 +57,49 @@ const OrderModal = ({ showModal, onHide, house, duration, price }) => {
     // }
     // const orderLocalStorage = JSON.parse(localStorage.getItem("order")); pernah aktif
 
-    const orderDetail = {
-      idOrder: randomTicket,
-      status: "Waiting Payment",
-      orderDuration: duration,
-      price,
-      checkinDate,
-      checkoutDate,
-      house,
-      orderTime: new Date(),
-      user: {
-        id: state.user.id,
-        username: state.user.username,
-        fullname: state.user.fullname,
-        gender: state.user.gender,
-        phone: state.user.phone,
-      },
-    };
+    try {
+      const orderDetail = {
+        status: "Waiting Payment",
+        duration,
+        total: price,
+        checkin: checkinDate,
+        checkout: checkoutDate,
+        propertyId: house.id,
+        userId: state.user.id,
+        ownerId: house.ownerId,
+      };
+      console.log(orderDetail);
 
-    const userBooking = state.user;
-    console.log(userBooking);
+      await axios.post("http://localhost:8080/api/v1/transaction", orderDetail);
+    } catch (error) {
+      console.log(error.response);
+    }
+    // const userBooking = state.user;
+    // console.log(userBooking);
 
-    const userSession = JSON.parse(sessionStorage.getItem("user"));
-    userSession.booking.push(orderDetail);
+    // const userSession = JSON.parse(sessionStorage.getItem("user"));
+    // userSession.booking.push(orderDetail);
 
-    sessionStorage.setItem(
-      "user",
-      JSON.stringify({
-        ...userSession,
-      })
-    );
+    // sessionStorage.setItem(
+    //   "user",
+    //   JSON.stringify({
+    //     ...userSession,
+    //   })
+    // );
 
-    dispatch({
-      type: "LOGIN",
-      payload: {
-        booking: [orderDetail],
-      },
-    });
+    // dispatch({
+    //   type: "LOGIN",
+    //   payload: {
+    //     booking: [orderDetail],
+    //   },
+    // });
 
     // orderLocalStorage.push(orderDetail); pernah aktif
     // localStorage.setItem("order", JSON.stringify(orderLocalStorage)); pernah aktif
 
     onHide();
   };
-  console.log(state.user);
+  // console.log(state.user);
 
   return (
     showModal && (
@@ -103,7 +116,11 @@ const OrderModal = ({ showModal, onHide, house, duration, price }) => {
             <CheckDate checkDate={checkinDate} handleCheck={handleCheckin} />
 
             <label className={styles.inputLabel}>Check-out</label>
-            <CheckDate checkDate={checkoutDate} handleCheck={handleCheckout} />
+            <CheckDate
+              checkDate={checkoutDate}
+              handleCheck={handleCheckout}
+              disabled
+            />
 
             <input
               type="submit"
@@ -119,7 +136,7 @@ const OrderModal = ({ showModal, onHide, house, duration, price }) => {
   );
 };
 
-const CheckDate = ({ checkDate, handleCheck }) => {
+const CheckDate = ({ checkDate, handleCheck, disabled }) => {
   // const [selectedDate, setSelectedDate] = useState();
 
   return (
@@ -138,12 +155,22 @@ const CheckDate = ({ checkDate, handleCheck }) => {
         width="24px"
       />
       <div>
-        <DatePicker
-          className={styles.datePicker}
-          placeholderText="Select your date"
-          selected={checkDate}
-          onChange={handleCheck}
-        />
+        {disabled ? (
+          <DatePicker
+            className={styles.datePicker}
+            placeholderText="Select your date"
+            selected={checkDate}
+            onChange={handleCheck}
+            disabled
+          />
+        ) : (
+          <DatePicker
+            className={styles.datePicker}
+            placeholderText="Select your date"
+            selected={checkDate}
+            onChange={handleCheck}
+          />
+        )}
       </div>
     </div>
   );

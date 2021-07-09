@@ -3,25 +3,29 @@ import Navbar from "../../components/Navbar";
 import ProfileContent from "../../components/ProfileContent";
 import { UserContext } from "../../contexts/UserContext";
 import NotFound from "../../pages/NotFound";
+import axios from "axios";
 
 const Profile = () => {
   const { state, dispatch } = useContext(UserContext);
 
   useEffect(() => {
-    const userSession = JSON.parse(sessionStorage.getItem("user"));
+    const getUser = async () => {
+      const token = sessionStorage.getItem("token");
 
-    if (userSession) {
+      const user = await axios.get(
+        "http://localhost:8080/api/v1/user/profile",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
       dispatch({
         type: "LOGIN",
         payload: {
-          user: userSession,
+          user: user.data.data,
         },
       });
-    } else {
-      dispatch({
-        type: "LOGOUT",
-      });
-    }
+    };
+
+    getUser();
   }, [dispatch]);
 
   if (state.isLogin) {

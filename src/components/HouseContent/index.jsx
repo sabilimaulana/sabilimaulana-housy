@@ -2,15 +2,14 @@ import styles from "./HouseContent.module.css";
 
 import bathroomIcon from "../../assets/images/bathroom-icon.svg";
 import bedroomIcon from "../../assets/images/bedroom-icon.svg";
+import houseIcon from "../../assets/images/house-icon.png";
 
-import houseTwo from "../../assets/images/houses/house-2.svg";
-import houseThree from "../../assets/images/houses/house-3.svg";
-import houseFour from "../../assets/images/houses/house-4.svg";
 import OrderModal from "../OrderModal";
 import { useState } from "react";
 import { useContext } from "react";
 import FilterContext from "../../contexts/FilterContext";
 import { UserContext } from "../../contexts/UserContext";
+import { convertToRupiah } from "../../utils/moneyConvert";
 
 const HouseContent = ({ house }) => {
   const [orderModalShow, setOrderModalShow] = useState(false);
@@ -28,30 +27,46 @@ const HouseContent = ({ house }) => {
   let price = "";
 
   if (filterState.filter.duration === "Day") {
-    price = house.price.day.value;
+    price = house.dayPrice;
   } else if (filterState.filter.duration === "Month") {
-    price = house.price.month.value;
+    price = house.monthPrice;
   } else {
-    price = house.price.year.value;
+    price = house.yearPrice;
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.imageWrapper}>
         <div className={styles.firstImageWrapper}>
-          <img className={styles.firstImage} src={house.image} alt="first" />
+          <img
+            className={styles.firstImage}
+            src={house.urlFirstImage ? house.urlFirstImage : houseIcon}
+            alt="first"
+          />
         </div>
 
         <div className={styles.secondImageWrapper}>
-          <img className={styles.secondImage} src={houseTwo} alt="first" />
+          <img
+            className={styles.secondImage}
+            src={house.urlSecondImage ? house.urlSecondImage : houseIcon}
+            alt="second"
+          />
         </div>
 
         <div className={styles.thirdImageWrapper}>
-          <img className={styles.thirdImage} src={houseThree} alt="first" />
+          <img
+            className={styles.thirdImage}
+            src={house.urlThirdImage ? house.urlThirdImage : houseIcon}
+            alt="third"
+          />
         </div>
 
         <div className={styles.fourthImageWrapper}>
-          <img className={styles.fourthImage} src={houseFour} alt="first" />
+          <img
+            className={styles.fourthImage}
+            src={house.urlForthImage ? house.urlForthImage : houseIcon}
+            alt="fourth"
+          />
         </div>
 
         <div className={styles.secondImage}></div>
@@ -59,12 +74,12 @@ const HouseContent = ({ house }) => {
         <div className={styles.fourthImage}></div>
       </div>
       <div className={styles.houseContentWrapper}>
-        <h1 className={styles.name}>{`House ${house.name}`}</h1>
+        <h1 className={styles.name}>{`House ${house.propertyName}`}</h1>
         <div className={styles.subtitle}>
           <div className={styles.subtitleLeft}>
-            <h3
-              className={styles.price}
-            >{`Rp. ${price} / ${filterState.filter.duration}`}</h3>
+            <h3 className={styles.price}>{`${convertToRupiah(price)} / ${
+              filterState.filter.duration
+            }`}</h3>
 
             <p className={styles.address}>
               {house.address}
@@ -76,7 +91,7 @@ const HouseContent = ({ house }) => {
             <div className={styles.spec}>
               <p className={styles.specTitle}>Bedrooms</p>
               <div className={styles.specWrapper}>
-                <p className={styles.specText}>{house.spec.bedroom}</p>
+                <p className={styles.specText}>{house.bedroom}</p>
                 <img
                   className={styles.specIcon}
                   src={bedroomIcon}
@@ -88,7 +103,7 @@ const HouseContent = ({ house }) => {
             <div className={styles.spec}>
               <p className={styles.specTitle}>Bathrooms</p>
               <div className={styles.specWrapper}>
-                <p className={styles.specText}>{house.spec.bathroom}</p>
+                <p className={styles.specText}>{house.bathroom}</p>
 
                 <img
                   className={styles.specIcon}
@@ -100,7 +115,7 @@ const HouseContent = ({ house }) => {
 
             <div className={styles.spec}>
               <p className={styles.specTitle}>Area</p>
-              <p>{`${house.spec.sqft}  ft`}</p>
+              <p>{`${house.area}  ft`}</p>
             </div>
           </div>
         </div>
@@ -136,7 +151,7 @@ const HouseContent = ({ house }) => {
       </div>
 
       <div className={styles.book}>
-        {state.user.name === "" ? (
+        {state.user.fullname === undefined || state.user.fullname === "" ? (
           <button className={styles.bookguest}>Book Now</button>
         ) : (
           <button

@@ -15,9 +15,10 @@ const UserDropdown = ({ showDropdown, onHide }) => {
   const router = useHistory();
 
   const handleLogout = () => {
+    sessionStorage.clear("token");
+
     router.push("/");
     dispatch({ type: "LOGOUT" });
-    sessionStorage.clear("user");
   };
 
   return showDropdown ? (

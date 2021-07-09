@@ -1,16 +1,21 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import Content from "../../components/Content";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
-import { houses } from "../../constants/houses";
 import { UserContext } from "../../contexts/UserContext";
 import { FilterContext } from "../../contexts/FilterContext";
 import { convertToAngka } from "../../utils/moneyConvert.js";
 import OwnerContent from "../../components/OwnerContent";
+import axios from "axios";
+import Loading from "../../components/Loading";
 
 function Home() {
   const { state, dispatch } = useContext(UserContext);
   const { filterState } = useContext(FilterContext);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [houses, setHouses] = useState([]);
 
   const {
     duration,
@@ -29,10 +34,18 @@ function Home() {
       if (!furnished && !petAllowed && !sharedAccomodation) {
         return houses;
       }
+      // console.log(
+      //   furnished,
+      //   house.furnished,
+      //   petAllowed,
+      //   house.petAllowed,
+      //   sharedAccomodation,
+      //   house.sharedAccomodation
+      // );
       return (
-        furnished === house.amenities[0].value &&
-        petAllowed === house.amenities[1].value &&
-        sharedAccomodation === house.amenities[2].value
+        furnished.toString() === house.furnished &&
+        petAllowed.toString() === house.petAllowed &&
+        sharedAccomodation.toString() === house.sharedAccomodation
       );
     });
 
@@ -45,40 +58,40 @@ function Home() {
         return true;
       }
 
-      console.log(bedroom, bathroom);
+      // console.log(bedroom, bathroom);
       if (bedroom === "5+" && bathroom === "5+") {
         return (
-          house.spec.bedroom >= parseInt(bedroom) &&
-          house.spec.bathroom >= parseInt(bathroom)
+          +house.bedroom >= parseInt(bedroom) &&
+          +house.bathroom >= parseInt(bathroom)
         );
       } else if (bedroom === "5+" && bathroom !== "5+") {
         // console.log("lala");
         if (bathroom === "") {
-          return house.spec.bedroom >= parseInt(bedroom);
+          return +house.bedroom >= parseInt(bedroom);
         }
         return (
-          house.spec.bedroom >= parseInt(bedroom) &&
-          house.spec.bathroom === parseInt(bathroom)
+          +house.bedroom >= parseInt(bedroom) &&
+          +house.bathroom === parseInt(bathroom)
         );
       } else if (bedroom !== "5+" && bathroom === "5+") {
         if (bedroom === "") {
-          return house.spec.bathroom >= parseInt(bathroom);
+          return +house.bathroom >= parseInt(bathroom);
         }
         return (
-          house.spec.bedroom === parseInt(bedroom) &&
-          house.spec.bathroom >= parseInt(bathroom)
+          +house.bedroom === parseInt(bedroom) &&
+          +house.bathroom >= parseInt(bathroom)
         );
       }
 
       if (
-        house.spec.bedroom === parseInt(bedroom) &&
-        house.spec.bathroom === parseInt(bathroom)
+        +house.bedroom === parseInt(bedroom) &&
+        +house.bathroom === parseInt(bathroom)
       ) {
         return true;
       }
       return (
-        (house.spec.bedroom === parseInt(bedroom) && !bathroom) ||
-        (house.spec.bathroom === parseInt(bathroom) && !bedroom)
+        (+house.bedroom === parseInt(bedroom) && !bathroom) ||
+        (+house.bathroom === parseInt(bathroom) && !bedroom)
       );
     });
   };
@@ -98,17 +111,11 @@ function Home() {
       } else {
         switch (duration) {
           case "Year":
-            return (
-              convertToAngka(house.price.year.value) <= convertToAngka(budget)
-            );
+            return convertToAngka(house.yearPrice) <= convertToAngka(budget);
           case "Month":
-            return (
-              convertToAngka(house.price.month.value) <= convertToAngka(budget)
-            );
+            return convertToAngka(house.monthPrice) <= convertToAngka(budget);
           case "Day":
-            return (
-              convertToAngka(house.price.day.value) <= convertToAngka(budget)
-            );
+            return convertToAngka(house.dayPrice) <= convertToAngka(budget);
           default:
             return false;
         }
@@ -142,25 +149,53 @@ function Home() {
   // console.log(filterState);
   console.log("code by sabilimaulana");
   useEffect(() => {
-    const userSession = JSON.parse(sessionStorage.getItem("user"));
+    const getUser = async () => {
+      const token = sessionStorage.getItem("token");
+      if (token) {
+        const user = await axios.get(
+          "http://localhost:8080/api/v1/user/profile",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
 
-    if (userSession) {
-      dispatch({
-        type: "LOGIN",
-        payload: {
-          user: userSession,
-        },
-      });
-    } else {
-      dispatch({
-        type: "LOGOUT",
-      });
-    }
+        dispatch({
+          type: "LOGIN",
+          payload: {
+            user: user.data.data,
+          },
+        });
+      }
+    };
+
+    const getHouses = async () => {
+      try {
+        setLoading(true);
+        const result = await axios.get(
+          "http://localhost:8080/api/v1/properties"
+        );
+        setHouses(result.data.data);
+        setLoading(false);
+      } catch (error) {
+        setError(true);
+        setLoading(false);
+        console.log(error.response);
+      }
+    };
+
+    getUser();
+    getHouses();
   }, [dispatch]);
 
   // console.log(state.user.status);
 
-  if (state.user.status === "owner") {
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <h1>Error</h1>;
+  }
+
+  if (state.user.listAs === "Owner") {
     return (
       <>
         <Navbar />

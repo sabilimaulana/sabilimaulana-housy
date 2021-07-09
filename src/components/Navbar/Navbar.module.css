@@ -52,6 +52,18 @@
   margin-right: 6px;
 }
 
+.user {
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid black;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .signWrapper {
   display: flex;
   justify-content: space-between;

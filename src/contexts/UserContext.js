@@ -3,18 +3,7 @@ import { createContext, useReducer } from "react";
 export const UserContext = createContext();
 
 const initialState = {
-  user: {
-    id: null,
-    fullname: "",
-    username: "",
-    password: "",
-    gender: "",
-    email: "",
-    phone: "",
-    status: "",
-    address: "",
-    booking: [],
-  },
+  user: {},
   isLogin: false,
 };
 
@@ -31,16 +20,7 @@ const userReducer = (state, action) => {
     case "LOGOUT":
       return {
         ...state,
-        user: {
-          id: null,
-          fullname: "",
-          username: "",
-          password: "",
-          email: "",
-          phone: "",
-          status: "",
-          booking: [],
-        },
+        user: {},
         isLogin: false,
       };
     default:

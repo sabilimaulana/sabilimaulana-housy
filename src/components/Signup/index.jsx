@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./Signup.module.css";
+import axios from "axios";
 
 // import "bootstrap/dist/css/bootstrap.min.css";
 // import { Modal, Button } from "react-bootstrap";
@@ -11,9 +12,18 @@ const Signup = ({ showModal, onHide, onHere }) => {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [gender, setGender] = useState("");
+  const [listAs, setListAs] = useState("");
   const [address, setAddress] = useState("");
 
   const [emailWarning, setEmailWarning] = useState(false);
+  const [signupWarning, setSignupWarning] = useState(false);
+  const [signupApiWarning, setSignupApiWarning] = useState("");
+
+  const handlePress = (e) => {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+    }
+  };
 
   useEffect(() => {
     isEmail(email);
@@ -40,15 +50,62 @@ const Signup = ({ showModal, onHide, onHere }) => {
   const handleSignup = (e) => {
     e.preventDefault();
 
-    console.log({
-      fullname,
-      username,
-      email,
-      password,
-      phoneNumber,
-      gender,
-      address,
-    });
+    if (
+      !username ||
+      !password ||
+      !fullname ||
+      !email ||
+      !gender ||
+      !address ||
+      !listAs ||
+      !phoneNumber
+    ) {
+      setSignupWarning(true);
+      return;
+    }
+
+    setSignupWarning(false);
+
+    axios
+      .post("http://localhost:8080/api/v1/signup/", {
+        username,
+        password,
+        fullname,
+        email,
+        gender,
+        address,
+        listAs,
+        phone: phoneNumber,
+      })
+      .then(function (response) {
+        setFullname("");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setPhoneNumber("");
+        setGender("");
+        setListAs("");
+        setAddress("");
+
+        setEmailWarning(false);
+        setSignupWarning(false);
+        setSignupApiWarning("");
+        onHide();
+      })
+      .catch(function (error) {
+        setSignupApiWarning(error.response.data.message);
+      });
+
+    // console.log({
+    //   username,
+    //   password,
+    //   fullname,
+    //   email,
+    //   gender,
+    //   address,
+    //   listAs,
+    //   phoneNumber,
+    // });
   };
 
   return (
@@ -122,6 +179,8 @@ const Signup = ({ showModal, onHide, onHere }) => {
               onChange={(e) => {
                 setPhoneNumber(e.target.value);
               }}
+              onKeyDown={handlePress}
+              onWheel={(e) => e.target.blur()}
             />
 
             <label className={styles.inputLabel}>Gender</label>
@@ -155,6 +214,37 @@ const Signup = ({ showModal, onHide, onHere }) => {
               </div>
             </div>
 
+            <label className={styles.inputLabel}>List as</label>
+            <div className={styles.genderRadio}>
+              <div>
+                <input
+                  type="radio"
+                  value="Tenant"
+                  id="Tenant"
+                  name="listAs"
+                  // value="Tenant"
+                  onClick={() => {
+                    setListAs("Tenant");
+                  }}
+                />
+                <label htmlFor="Tenant">Tenant</label>
+              </div>
+
+              <div>
+                <input
+                  type="radio"
+                  value="Owner"
+                  id="Owner"
+                  name="listAs"
+                  // value={gender}
+                  onClick={() => {
+                    setListAs("Owner");
+                  }}
+                />
+                <label htmlFor="female">Owner</label>
+              </div>
+            </div>
+
             <label className={styles.inputLabel}>Alamat</label>
             <textarea
               className={styles.inputAddress}
@@ -165,7 +255,12 @@ const Signup = ({ showModal, onHide, onHere }) => {
                 setAddress(e.target.value);
               }}
             />
-
+            <p className={styles.signupWarning}>{signupApiWarning}</p>
+            {signupWarning && (
+              <p className={styles.signupWarning}>
+                Silahkan isi semua input field
+              </p>
+            )}
             <input
               type="submit"
               className={styles.signupButton}

@@ -1,24 +1,40 @@
+import axios from "axios";
+import QRCode from "react-qr-code";
+
 import styles from "./BookingCard.module.css";
 
+import folderIcon from "../../assets/images/folder-icon.svg";
 import brandIcon from "../../assets/images/brand-icon.svg";
-
 import ellipseStart from "../../assets/images/ellipse-start.svg";
 import verticalLine from "../../assets/images/line-icon.svg";
 import ellipseEnd from "../../assets/images/ellipse-end.svg";
-// import { useContext } from "react";
-// import { UserContext } from "../../contexts/UserContext";
+import { convertToRupiah } from "../../utils/moneyConvert";
+import { useState } from "react";
+import closeIcon from "../../assets/images/close-icon.svg";
 
-const BookingCard = ({
-  button,
-  orderDetail,
-  invoice,
+const BookingCard = ({ button, orderDetail, invoice, marginBottom }) => {
+  const [proofImage, setProofImage] = useState("");
+  const [isProofImageUploaded, setIsProofImageUploaded] = useState(false);
+  const [rawProofImage, setRawProofImage] = useState();
 
-  marginBottom,
-}) => {
-  const { status, price, orderDuration, orderTime, checkinDate, checkoutDate } =
-    orderDetail;
-  const { fullname, gender, phone } = orderDetail.user;
-  const { name: houseName, address, amenities } = orderDetail.house;
+  const {
+    status,
+    total,
+    duration,
+    createdAt: orderTime,
+    checkin,
+    checkout,
+    id,
+    attachment,
+  } = orderDetail;
+  const { fullname, gender, phone } = orderDetail.userData;
+  const {
+    propertyName: houseName,
+    address,
+    furnished,
+    petAllowed,
+    sharedAccomodation,
+  } = orderDetail.Property;
 
   const getDayString = (time) => {
     const dayNumber = new Date(time).getDay();
@@ -62,6 +78,24 @@ const BookingCard = ({
     return new Date(time).getDate();
   };
 
+  const handleProof = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      let reader = new FileReader();
+
+      reader.onload = (e) => {
+        setProofImage(e.target.result);
+        setIsProofImageUploaded(true);
+      };
+      reader.readAsDataURL(e.target.files[0]);
+      setRawProofImage(e.target.files[0]);
+    }
+  };
+  const handleCloseProofImage = () => {
+    setProofImage("");
+    setRawProofImage();
+    setIsProofImageUploaded(false);
+  };
+
   //   <BookingCard
   //   button
   //   key={index}
@@ -88,28 +122,51 @@ const BookingCard = ({
   // />
 
   // const {state, dispatch} = useContext(UserContext)
-  const handlePay = () => {
-    if (!localStorage.getItem("order")) {
-      localStorage.setItem("order", JSON.stringify([]));
+  const handlePay = async () => {
+    try {
+      var bodyForm = new FormData();
+      bodyForm.append("proofImage", rawProofImage);
+      bodyForm.append("status", "Waiting Approve");
+      await axios({
+        method: "PATCH",
+        url: `http://localhost:8080/api/v1/transaction/${id}`,
+        data: bodyForm,
+      });
+
+      // axios({
+      //   method: "POST",
+      //   url: "http://localhost:8080/api/v1/property",
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      //   data: bodyForm,
+      // });
+    } catch (error) {
+      console.log(error.response);
     }
 
-    orderDetail.status = "Waiting Approve";
-    const orderLocalStorage = JSON.parse(localStorage.getItem("order"));
-    orderLocalStorage.push(orderDetail);
-    localStorage.setItem("order", JSON.stringify(orderLocalStorage));
+    // if (!localStorage.getItem("order")) {
+    //   localStorage.setItem("order", JSON.stringify([]));
+    // }
 
-    const userSessionStorage = JSON.parse(sessionStorage.getItem("user"));
+    // orderDetail.status = "Waiting Approve";
+    // const orderLocalStorage = JSON.parse(localStorage.getItem("order"));
+    // orderLocalStorage.push(orderDetail);
+    // localStorage.setItem("order", JSON.stringify(orderLocalStorage));
 
-    const newBooking = userSessionStorage.booking.filter((item) => {
-      // console.log(item.idOrder, orderDetail.idOrder);
-      if (item.idOrder === orderDetail.idOrder) {
-        item.status = "Waiting Approve";
+    // const userSessionStorage = JSON.parse(sessionStorage.getItem("user"));
 
-        return true;
-      }
+    // const newBooking = userSessionStorage.booking.filter((item) => {
+    //   // console.log(item.idOrder, orderDetail.idOrder);
+    //   if (item.idOrder === orderDetail.idOrder) {
+    //     item.status = "Waiting Approve";
 
-      return true;
-    });
+    //     return true;
+    //   }
+
+    //   return true;
+    // });
 
     // const newBooking = userSessionStorage.booking.filter((item) => {
     //   console.log(item.idOrder, orderDetail.idOrder);
@@ -119,8 +176,8 @@ const BookingCard = ({
     //   return true;
     // });
     // console.log(newBooking);
-    userSessionStorage.booking = newBooking;
-    sessionStorage.setItem("user", JSON.stringify(userSessionStorage));
+    // userSessionStorage.booking = newBooking;
+    // sessionStorage.setItem("user", JSON.stringify(userSessionStorage));
     window.location.reload();
   };
 
@@ -158,7 +215,7 @@ const BookingCard = ({
             <p className={styles.houseAddress}>{address}</p>
             <div className={styles.bookingStatus}>
               {status === "Approved" ? (
-                <div className={styles.approveStatus}>Approve</div>
+                <div className={styles.approveStatus}>Approved</div>
               ) : status === "Cancel" ? (
                 <div className={styles.cancelStatus}>Cancel</div>
               ) : status === "Waiting Approve" ? (
@@ -181,16 +238,16 @@ const BookingCard = ({
             <div className={styles.dateWrapper}>
               <div className={styles.checkinWrapper}>
                 <h3>Check-in</h3>
-                <p>{`${getDate(checkinDate)} ${getMonthString(
-                  checkoutDate
-                )} ${getFullYear(checkoutDate)}`}</p>
+                <p>{`${getDate(checkin)} ${getMonthString(
+                  checkin
+                )} ${getFullYear(checkin)}`}</p>
               </div>
 
               <div className={styles.checkoutWrapper}>
                 <h3>Check-out</h3>
-                <p>{`${getDate(checkoutDate)} ${getMonthString(
-                  checkoutDate
-                )} ${getFullYear(checkoutDate)}`}</p>
+                <p>{`${getDate(checkout)} ${getMonthString(
+                  checkout
+                )} ${getFullYear(checkout)}`}</p>
               </div>
             </div>
           </div>
@@ -199,26 +256,68 @@ const BookingCard = ({
             <div className={styles.amenities}>
               <h3>Amenities</h3>
               <div>
-                <p>{amenities[0].value && "Furnished"}</p>
-                <p>{amenities[1].value && "Pet Allowed"}</p>
-                <p>{amenities[2].value && "Shared Accomodation"}</p>
+                <p>{furnished === "true" && "Furnished"}</p>
+                <p>{petAllowed === "true" && "Pet Allowed"}</p>
+                <p>{sharedAccomodation === "true" && "Shared Accomodation"}</p>
               </div>
             </div>
 
             <div className={styles.duration}>
               <h3>Type of Rent</h3>
-              <p>{orderDuration}</p>
+              <p>{duration}</p>
             </div>
           </div>
 
           <div className={styles.cardContentProof}>
-            <div className={styles.imageWrapper}>
-              <img src="" alt="" />
-              {status === "Approved" ? "barcode" : "input file"}
-            </div>
             {status === "Waiting Payment" ? (
-              <p>Upload payment proof</p>
-            ) : status === "Cancel" ? null : null}
+              isProofImageUploaded ? (
+                <div className={styles.imagePreview}>
+                  <img
+                    src={proofImage}
+                    className={styles.uploadedImage}
+                    alt="uploaded proof img"
+                    draggable="false"
+                  />
+                  <img
+                    src={closeIcon}
+                    alt="close"
+                    width="20px"
+                    className={styles.closeButton}
+                    onClick={handleCloseProofImage}
+                  />
+                </div>
+              ) : (
+                <div className={styles.uploadField}>
+                  <label htmlFor="proofInput">
+                    <img src={folderIcon} alt="placeholder" width="30px" />
+                  </label>
+                  <input
+                    type="file"
+                    id="proofInput"
+                    accept=".jpeg,.jpg,.png,.svg"
+                    onChange={handleProof}
+                  />
+                </div>
+              )
+            ) : status === "Waiting Approve" ? (
+              <img
+                src={attachment}
+                className={styles.uploadedImage}
+                alt="uploaded proof img"
+                draggable="false"
+                style={{ border: "2px solid black" }}
+              />
+            ) : status === "Approved" ? (
+              <QRCode
+                value={`http://localhost:8080/api/v1/transaction/${id}`}
+                size={140}
+              />
+            ) : status === "Cancel" ? (
+              <QRCode
+                value={`http://localhost:8080/api/v1/transaction/${id}`}
+                size={140}
+              />
+            ) : null}
           </div>
         </div>
 
@@ -258,7 +357,7 @@ const BookingCard = ({
             </div>
             <div className={styles.totalValue}>
               <p className={styles.tableHeader}>&nbsp;</p>
-              <p className={styles.totalText}>{`1 ${orderDuration}`}</p>
+              <p className={styles.totalText}>{`1 ${duration}`}</p>
               <p
                 className={styles.totalPrice}
                 style={{
@@ -268,7 +367,7 @@ const BookingCard = ({
                       : "rgb(255, 7, 66)",
                 }}
               >
-                {price}
+                {convertToRupiah(total)}
               </p>
             </div>
           </div>

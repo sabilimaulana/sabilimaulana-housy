@@ -1,30 +1,34 @@
 import { useContext, useEffect } from "react";
-import { Redirect } from "react-router";
+// import { Redirect } from "react-router";
 import AddPropertyContent from "../../components/AddPropertyContent";
 import Navbar from "../../components/Navbar";
 import { UserContext } from "../../contexts/UserContext";
+import NotFound from "../NotFound";
+import axios from "axios";
 
 const AddProperty = () => {
   const { dispatch, state } = useContext(UserContext);
-
   useEffect(() => {
-    const userSession = JSON.parse(sessionStorage.getItem("user"));
+    const getUser = async () => {
+      const token = sessionStorage.getItem("token");
 
-    if (userSession) {
+      const user = await axios.get(
+        "http://localhost:8080/api/v1/user/profile",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
       dispatch({
         type: "LOGIN",
         payload: {
-          user: userSession,
+          user: user.data.data,
         },
       });
-    } else {
-      dispatch({
-        type: "LOGOUT",
-      });
-    }
+    };
+
+    getUser();
   }, [dispatch]);
 
-  if (state.user.status === "owner") {
+  if (state.user.listAs === "Owner") {
     return (
       <>
         <Navbar />
@@ -32,7 +36,8 @@ const AddProperty = () => {
       </>
     );
   } else {
-    return <Redirect to="/" />;
+    // return <Redirect to="/" />;
+    return <NotFound />;
   }
 };
 
