@@ -1,44 +1,43 @@
 import { useEffect, useContext, useState } from "react";
-import axios from "axios";
 
 import BookingContent from "../../components/BookingContent";
 import Navbar from "../../components/Navbar";
 import { UserContext } from "../../contexts/UserContext";
-import NotFound from "../NotFound";
+import Loading from "../../components/Loading";
+import { Redirect } from "react-router";
+import { API, setAuthToken } from "../../service/api";
 
 const Booking = () => {
   const { state, dispatch } = useContext(UserContext);
 
   const [order, setOrder] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getUser = async () => {
-      const token = sessionStorage.getItem("token");
-      if (token) {
-        const user = await axios.get(
-          "http://localhost:8080/api/v1/user/profile",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-
-        dispatch({
-          type: "LOGIN",
-          payload: {
-            user: user.data.data,
-          },
-        });
+      try {
+        const token = sessionStorage.getItem("token");
+        setAuthToken(token);
+        if (token) {
+          const user = await API.get("/user/profile");
+          dispatch({
+            type: "LOGIN",
+            payload: {
+              user: user.data.data,
+            },
+          });
+        }
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error.response);
       }
     };
 
-    const getOrder = async (token) => {
+    const getOrder = async () => {
       try {
-        const token = sessionStorage.getItem("token");
-
-        const result = await axios.get(
-          "http://localhost:8080/api/v1/transactions/order",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        setOrder(result.data.data);
-        console.log(result.data.data);
+        const result = await API.get("/transactions/order");
+        setOrder(result.data.data.reverse());
       } catch (error) {
         console.log(error.response);
       }
@@ -48,6 +47,9 @@ const Booking = () => {
     getOrder();
   }, [dispatch]);
 
+  if (loading) {
+    return <Loading />;
+  }
   if (state.isLogin) {
     return (
       <>
@@ -56,7 +58,7 @@ const Booking = () => {
       </>
     );
   } else {
-    return <NotFound></NotFound>;
+    return <Redirect to="/" />;
   }
 };
 

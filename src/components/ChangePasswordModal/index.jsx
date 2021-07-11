@@ -91,8 +91,11 @@ const ChangePasswordModal = ({ showModal, onHide }) => {
               id="retype-password"
               onChange={(e) => setRetypePassword(e.target.value)}
             />
-
-            <p className={styles.warning}>{warning}</p>
+            {warning !== "" ? (
+              <p className={styles.warning}>{warning}</p>
+            ) : (
+              <p>&nbsp;</p>
+            )}
 
             <Link to="/me">
               <input

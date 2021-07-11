@@ -37,8 +37,6 @@ const Signup = ({ showModal, onHide, onHere }) => {
     const emailRegex =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    // const emailRegex =
-    // /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const res = emailRegex.test(email);
     if (res) {
       setEmailWarning(false);
@@ -148,7 +146,6 @@ const Signup = ({ showModal, onHide, onHere }) => {
                   ? "2px solid red"
                   : "2px solid rgba(210, 210, 210, 0.25)",
               }}
-              // style={emailWarning && { border: "2px solid red" }}
               type="email"
               name="email"
               id="email"
@@ -241,7 +238,7 @@ const Signup = ({ showModal, onHide, onHere }) => {
                     setListAs("Owner");
                   }}
                 />
-                <label htmlFor="female">Owner</label>
+                <label htmlFor="Owner">Owner</label>
               </div>
             </div>
 
@@ -251,6 +248,7 @@ const Signup = ({ showModal, onHide, onHere }) => {
               name="address"
               id="address"
               value={address}
+              maxLength="254"
               onChange={(e) => {
                 setAddress(e.target.value);
               }}

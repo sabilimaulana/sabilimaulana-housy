@@ -4,12 +4,13 @@ import folderIcon from "../../assets/images/folder-icon.svg";
 import closeIcon from "../../assets/images/close-icon.svg";
 import axios from "axios";
 import { UserContext } from "../../contexts/UserContext";
+import dropdownIcon from "../../assets/images/black-dropdown-icon.svg";
 
 const AddPropertyContent = () => {
   const { state } = useContext(UserContext);
 
   const [propertyName, setPropertyName] = useState("");
-  const [city, setCity] = useState("1");
+  const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [yearPrice, setYearPrice] = useState("");
   const [monthPrice, setMonthPrice] = useState("");
@@ -20,6 +21,7 @@ const AddPropertyContent = () => {
   const [bedroom, setBedroom] = useState("1");
   const [bathroom, setBathroom] = useState("1");
   const [area, setArea] = useState("");
+  const [description, setDescription] = useState("");
 
   // untuk image preview
   const [firstImage, setFirstImage] = useState("");
@@ -182,6 +184,7 @@ const AddPropertyContent = () => {
       bodyForm.append("bedroom", bedroom);
       bodyForm.append("bathroom", bathroom);
       bodyForm.append("area", area);
+      bodyForm.append("description", description);
 
       const token = await sessionStorage.getItem("token");
 
@@ -205,6 +208,7 @@ const AddPropertyContent = () => {
       try {
         const result = await axios.get("http://localhost:8080/api/v1/cities");
         setCities(result.data.data);
+        setCity(result.data.data[0]?.id);
         // setCities()
       } catch (error) {
         console.log(error.data);
@@ -232,6 +236,12 @@ const AddPropertyContent = () => {
         <label htmlFor="city" className={styles.inputLabel}>
           City
         </label>
+        <img
+          src={dropdownIcon}
+          className={styles.cityDropdown}
+          alt="dropdown"
+          height="20px"
+        />
 
         <select
           name="city"
@@ -239,7 +249,6 @@ const AddPropertyContent = () => {
           onChange={(e) => {
             setCity(e.target.value);
           }}
-          defaultValue="1"
         >
           {cities.map((city, index) => {
             return (
@@ -342,6 +351,12 @@ const AddPropertyContent = () => {
         <label htmlFor="bedroom" className={styles.inputLabel}>
           Bedroom
         </label>
+        <img
+          src={dropdownIcon}
+          className={styles.bedroomDropdown}
+          alt="dropdown"
+          height="20px"
+        />
         <select
           name="bedroom"
           id="bedroom"
@@ -363,6 +378,12 @@ const AddPropertyContent = () => {
         <label htmlFor="bathroom" className={styles.inputLabel}>
           Bathroom
         </label>
+        <img
+          src={dropdownIcon}
+          className={styles.bathroomDropdown}
+          alt="dropdown"
+          height="20px"
+        />
         <select
           name="bathroom"
           id="bathroom"
@@ -393,6 +414,18 @@ const AddPropertyContent = () => {
           onKeyDown={handlePress}
           onWheel={(e) => e.target.blur()}
         />
+
+        <label htmlFor="description" className={styles.inputLabel}>
+          Description
+        </label>
+        <textarea
+          placeholder="..."
+          className={styles.inputTextarea}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          maxLength="1400"
+        ></textarea>
+
         {/* Hati-hati terhadap kodingan berikut rawan terjadi kebingungan */}
         {/*  */}
         <div className={styles.boxFileWrapper}>

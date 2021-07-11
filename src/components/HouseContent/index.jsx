@@ -87,6 +87,17 @@ const HouseContent = ({ house }) => {
               Tangerang Selatan */}
             </p>
           </div>
+          <div className={styles.subtitleCenter}>
+            <p>Amenities</p>
+            <div className={styles.amenitiesWrapper}>
+              {house.furnished === "true" && <p>Furnished</p>}
+              {house.petAllowed === "true" && <p>Pet Allowed</p>}
+
+              {house.sharedAccomodation === "true" && (
+                <p>Shared Accomodation</p>
+              )}
+            </div>
+          </div>
           <div className={styles.subtitleRight}>
             <div className={styles.spec}>
               <p className={styles.specTitle}>Bedrooms</p>
@@ -122,32 +133,7 @@ const HouseContent = ({ house }) => {
       </div>
       <div className={styles.descriptionWrapper}>
         <h3 className={styles.descTitle}>Description</h3>
-        <p className={styles.desc}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus
-          fuga consequatur atque vero pariatur placeat, deleniti excepturi quasi
-          impedit perspiciatis velit iure quos dolor numquam voluptatibus qui
-          dicta. Laboriosam, soluta! Lorem ipsum dolor sit, amet consectetur
-          adipisicing elit. Non asperiores amet autem impedit, vero iure rem
-          corrupti neque aliquam quaerat recusandae necessitatibus. Quo,
-          laboriosam cumque quos deleniti dolor odio optio. Lorem ipsum dolor,
-          sit amet consectetur adipisicing elit. Ullam aperiam aspernatur, unde
-          necessitatibus laboriosam neque ea voluptates asperiores officia odio.
-          Consequatur quia exercitationem accusamus asperiores deleniti hic
-          officiis temporibus? Porro. Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Neque ex quidem iste ullam, id, repellendus
-          voluptatum voluptatibus, tenetur sapiente eaque fugit adipisci! Sequi
-          doloremque eum magnam in iste, repellendus autem. Lorem ipsum dolor
-          sit amet consectetur adipisicing elit. Dolorem magnam dignissimos
-          error consequuntur aut eaque similique ab repudiandae, voluptates
-          quaerat perferendis qui, numquam iste ad? Fugit id mollitia fugiat
-          maiores. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Voluptatem autem nobis enim animi commodi ipsa nam, corporis
-          temporibus dolorem hic voluptas ducimus inventore fuga eligendi itaque
-          quae perferendis quaerat quo. Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Sapiente fugit perferendis eius nihil, quas expedita
-          provident temporibus ab molestiae, doloremque explicabo vero a quae
-          beatae.
-        </p>
+        <p className={styles.desc}>{house.description}</p>
       </div>
 
       <div className={styles.book}>

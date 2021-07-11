@@ -11,11 +11,13 @@ import ellipseEnd from "../../assets/images/ellipse-end.svg";
 import { convertToRupiah } from "../../utils/moneyConvert";
 import { useState } from "react";
 import closeIcon from "../../assets/images/close-icon.svg";
+import PayPopup from "../PayPopup";
 
 const BookingCard = ({ button, orderDetail, invoice, marginBottom }) => {
   const [proofImage, setProofImage] = useState("");
   const [isProofImageUploaded, setIsProofImageUploaded] = useState(false);
   const [rawProofImage, setRawProofImage] = useState();
+  const [showPopup, setShowPopup] = useState(false);
 
   const {
     status,
@@ -178,7 +180,8 @@ const BookingCard = ({ button, orderDetail, invoice, marginBottom }) => {
     // console.log(newBooking);
     // userSessionStorage.booking = newBooking;
     // sessionStorage.setItem("user", JSON.stringify(userSessionStorage));
-    window.location.reload();
+    // window.location.reload();
+    setShowPopup(true);
   };
 
   return (
@@ -382,6 +385,13 @@ const BookingCard = ({ button, orderDetail, invoice, marginBottom }) => {
           </button>
         </div>
       )}
+      <PayPopup
+        showModal={showPopup}
+        onHide={() => {
+          setShowPopup(false);
+          window.location.reload();
+        }}
+      />
     </div>
   );
 };

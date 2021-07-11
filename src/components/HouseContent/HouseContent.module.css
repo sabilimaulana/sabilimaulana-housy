@@ -3,7 +3,7 @@
   flex-direction: column;
 
   width: 100%;
-  height: calc(1200px - 120px);
+  /* height: calc(1200px - 120px); */
 
   padding: 19px 211px 75px 211px;
 
@@ -21,14 +21,24 @@
   height: 541px;
 
   border-radius: 5px;
-  /* background-color: wheat; */
-
   margin-bottom: 40px;
 }
 
 .imageWrapper img:hover {
   cursor: pointer;
   opacity: 0.5;
+}
+
+.imageWrapper img {
+  animation: blur 300ms;
+}
+
+@keyframes blur {
+  0% {
+    filter: blur(50px);
+  }
+  100% {
+  }
 }
 
 .firstImageWrapper {
@@ -99,8 +109,7 @@
 }
 
 .houseContentWrapper {
-  /* background-color: blueviolet; */
-  padding: 0 20px;
+  /* padding: 0 20px; */
 
   border-radius: 5px;
   margin-bottom: 41px;
@@ -143,6 +152,40 @@
   align-items: center;
 
   width: 100%;
+}
+
+.subtitleCenter {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 45px;
+  width: 360px;
+}
+
+.subtitleCenter p {
+  color: #a8a8a8;
+  font-size: 13px;
+}
+
+.amenitiesWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+}
+
+.amenitiesWrapper p {
+  color: #000;
+  font-size: 16px;
+  margin-right: 15px;
+}
+
+.amenitiesWrapper p:last-child {
+  margin-right: 0;
 }
 
 .subtitleRight {
@@ -190,7 +233,9 @@
 }
 
 .desc {
-  font-size: 14px;
+  font-size: 16px;
+  max-height: 150px;
+  overflow-y: scroll;
   color: #a8a8a8;
 }
 
@@ -219,6 +264,8 @@
 
   border-radius: 5px;
   text-decoration: none;
+
+  margin-bottom: 50px;
 }
 
 .booknow:hover {

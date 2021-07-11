@@ -13,12 +13,14 @@ import UserDropdown from "../UserDropdown";
 // import OwnerDropdown from "../OwnerDropdown";
 
 import { UserContext } from "../../contexts/UserContext";
-import { Link } from "react-router-dom";
+import { Link, Router, useHistory } from "react-router-dom";
 import FilterContext from "../../contexts/FilterContext";
 import OwnerDropdown from "../OwnerDropdown";
 
 const Navbar = ({ searchbar }) => {
   // handleSearch, searchText,
+  const router = useHistory();
+
   const { state } = useContext(UserContext);
 
   const { filterDispatch } = useContext(FilterContext);
@@ -53,7 +55,14 @@ const Navbar = ({ searchbar }) => {
   return (
     <nav className={styles.navbar}>
       <Link to="/">
-        <img src={brandIcon} alt="brand icon" width="138px" />
+        <img
+          src={brandIcon}
+          alt="brand icon"
+          width="138px"
+          onClick={() => {
+            window.location.reload();
+          }}
+        />
       </Link>
 
       {searchbar && (

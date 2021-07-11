@@ -116,6 +116,11 @@
   margin-bottom: 30px;
   text-decoration: none;
   cursor: pointer;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  z-index: 2;
 }
 
 .boxFileWrapper {
@@ -216,4 +221,22 @@
   position: relative;
   color: red;
   top: 40px;
+}
+
+.cityDropdown {
+  position: absolute;
+  right: 152px;
+  top: 466px;
+}
+
+.bedroomDropdown {
+  position: absolute;
+  right: 152px;
+  top: 987px;
+}
+
+.bathroomDropdown {
+  position: absolute;
+  right: 152px;
+  top: 1111px;
 }

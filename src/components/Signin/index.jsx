@@ -5,6 +5,7 @@ import styles from "./Signin.module.css";
 // import { users } from "../../constants/users";
 import { UserContext } from "../../contexts/UserContext";
 import axios from "axios";
+import { API, setAuthToken } from "../../service/api";
 
 const Signin = ({ showModal, onHide, onHere }) => {
   // const [user, setUser] = useState({});
@@ -22,18 +23,21 @@ const Signin = ({ showModal, onHide, onHere }) => {
   const handleSignin = async (e) => {
     e.preventDefault();
 
+    const data = {
+      username: userInput.username,
+      password: userInput.password.toString(),
+    };
     try {
-      const result = await axios.post("http://localhost:8080/api/v1/signin", {
-        username: userInput.username,
-        password: userInput.password.toString(),
-      });
+      const result = await API.post("/signin", data);
 
-      console.log(result);
+      // console.log(result);
 
       if (result.data.hasOwnProperty("token")) {
         setWarning("");
         setUserInput({ username: "", password: "" });
         sessionStorage.setItem("token", result.data.token);
+
+        setAuthToken(result.data.token);
 
         const user = await axios.get(
           "http://localhost:8080/api/v1/user/profile",
@@ -97,7 +101,11 @@ const Signin = ({ showModal, onHide, onHere }) => {
             </Link>
 
             <div className={styles.centerWrapper}>
-              <span className={styles.warning}>{warning}</span>
+              {warning ? (
+                <p className={styles.warning}>{warning}</p>
+              ) : (
+                <p className={styles.blank}>&nbsp;</p>
+              )}
             </div>
 
             <div className={styles.centerWrapper}>
@@ -108,6 +116,7 @@ const Signin = ({ showModal, onHide, onHere }) => {
                   onClick={() => {
                     onHide();
                     onHere();
+                    setWarning("");
                   }}
                 >
                   Here
@@ -116,7 +125,13 @@ const Signin = ({ showModal, onHide, onHere }) => {
             </div>
           </form>
         </div>
-        <div className={styles.background} onClick={onHide}></div>
+        <div
+          className={styles.background}
+          onClick={() => {
+            onHide();
+            setWarning("");
+          }}
+        ></div>
       </>
     )
   );

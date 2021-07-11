@@ -8,6 +8,7 @@ import logoutIcon from "../../assets/images/logout-icon.svg";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { useHistory } from "react-router-dom";
+import { setAuthToken } from "../../service/api";
 
 const UserDropdown = ({ showDropdown, onHide }) => {
   const { dispatch } = useContext(UserContext);
@@ -16,79 +17,85 @@ const UserDropdown = ({ showDropdown, onHide }) => {
 
   const handleLogout = () => {
     sessionStorage.clear("token");
+    setAuthToken();
 
-    router.push("/");
     dispatch({ type: "LOGOUT" });
+    router.push("/");
   };
 
-  return showDropdown ? (
-    <>
-      <div className={styles.dropdownWrapper}>
-        <img
-          src={triangle}
-          alt="backflip triangle"
-          className={styles.triangle}
-        />
-
-        <div
-          className={styles.dropdownMenuWrapper}
-          onClick={() => {
-            router.push("/me");
-          }}
-        >
+  return (
+    showDropdown && (
+      <>
+        <div className={styles.dropdownWrapper}>
           <img
-            className={styles.menuIcon}
-            src={userIcon}
-            alt="user icon"
-            width="40px"
+            src={triangle}
+            alt="backflip triangle"
+            className={styles.triangle}
           />
-          <p className={styles.menuText}>Profile</p>
-        </div>
 
-        <div
-          className={styles.dropdownMenuWrapper}
-          onClick={() => {
-            router.push("/my-booking");
-          }}
-        >
-          <img
-            className={styles.menuIcon}
-            src={calendarIcon}
-            alt="calendar icon"
-            width="40px"
-          />
-          <p className={styles.menuText}>My booking</p>
-        </div>
+          <div
+            className={styles.dropdownMenuWrapper}
+            onClick={() => {
+              router.push("/me");
+              onHide();
+            }}
+          >
+            <img
+              className={styles.menuIcon}
+              src={userIcon}
+              alt="user icon"
+              width="40px"
+            />
+            <p className={styles.menuText}>Profile</p>
+          </div>
 
-        <div
-          className={styles.dropdownMenuWrapper}
-          onClick={() => {
-            router.push("/my-history");
-          }}
-        >
-          <img
-            className={styles.menuIcon}
-            src={billIcon}
-            alt="bill icon"
-            width="40px"
-          />
-          <p className={styles.menuText}>History</p>
-        </div>
+          <div
+            className={styles.dropdownMenuWrapper}
+            onClick={() => {
+              router.push("/my-booking");
+              onHide();
+            }}
+          >
+            <img
+              className={styles.menuIcon}
+              src={calendarIcon}
+              alt="calendar icon"
+              width="40px"
+            />
+            <p className={styles.menuText}>My booking</p>
+          </div>
 
-        <p className={styles.divider}></p>
-        <div className={styles.dropdownMenuWrapper} onClick={handleLogout}>
-          <img
-            className={styles.menuIcon}
-            src={logoutIcon}
-            alt="logout icon"
-            width="40px"
-          />
-          <p className={styles.menuText}>Logout</p>
+          <div
+            className={styles.dropdownMenuWrapper}
+            onClick={() => {
+              router.push("/my-history");
+              onHide();
+            }}
+          >
+            <img
+              className={styles.menuIcon}
+              src={billIcon}
+              alt="bill icon"
+              width="40px"
+            />
+            <p className={styles.menuText}>History</p>
+          </div>
+
+          <p className={styles.divider}></p>
+          <div className={styles.dropdownMenuWrapper} onClick={handleLogout}>
+            <img
+              className={styles.menuIcon}
+              src={logoutIcon}
+              alt="logout icon"
+              width="40px"
+            />
+            <p className={styles.menuText}>Logout</p>
+          </div>
         </div>
-      </div>
-      <div className={styles.background} onClick={onHide}></div>
-    </>
-  ) : null;
+        <div className={styles.background} onClick={onHide}></div>
+      </>
+    )
+  );
 };
 
 export default UserDropdown;

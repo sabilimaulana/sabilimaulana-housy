@@ -1,43 +1,64 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import HistoryContent from "../../components/HistoryContent";
 import Navbar from "../../components/Navbar";
 import { UserContext } from "../../contexts/UserContext";
-import NotFound from "../NotFound";
-import axios from "axios";
+import Loading from "../../components/Loading";
+import { Redirect } from "react-router";
+import { API, setAuthToken } from "../../service/api";
 const History = () => {
   const { state, dispatch } = useContext(UserContext);
+  const [histories, setHistories] = useState([]);
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getUser = async () => {
-      const token = sessionStorage.getItem("token");
-      if (token) {
-        const user = await axios.get(
-          "http://localhost:8080/api/v1/user/profile",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+      try {
+        const token = sessionStorage.getItem("token");
+        setAuthToken(token);
+        if (token) {
+          const user = await API.get("/user/profile");
+          dispatch({
+            type: "LOGIN",
+            payload: {
+              user: user.data.data,
+            },
+          });
+        }
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error.response);
+      }
+    };
 
-        dispatch({
-          type: "LOGIN",
-          payload: {
-            user: user.data.data,
-          },
-        });
+    const getHistories = async () => {
+      try {
+        const result = await API.get("/transactions/history");
+
+        setHistories(result.data.data.reverse());
+      } catch (error) {
+        console.log(error.data);
       }
     };
 
     getUser();
+    getHistories();
   }, [dispatch]);
 
+  if (loading) {
+    return <Loading />;
+  }
+
   if (state.isLogin) {
-    // console.log(state);
     return (
       <>
         <Navbar />
-        <HistoryContent />
+        <HistoryContent histories={histories} />
       </>
     );
   } else {
-    return <NotFound></NotFound>;
+    return <Redirect to="/" />;
   }
 };
 

@@ -1,33 +1,44 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 // import { Redirect } from "react-router";
 import AddPropertyContent from "../../components/AddPropertyContent";
 import Navbar from "../../components/Navbar";
 import { UserContext } from "../../contexts/UserContext";
-import NotFound from "../NotFound";
-import axios from "axios";
+import Loading from "../../components/Loading";
+import { Redirect } from "react-router";
+import { API, setAuthToken } from "../../service/api";
 
 const AddProperty = () => {
   const { dispatch, state } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(false);
+
   useEffect(() => {
     const getUser = async () => {
-      const token = sessionStorage.getItem("token");
-
-      const user = await axios.get(
-        "http://localhost:8080/api/v1/user/profile",
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      dispatch({
-        type: "LOGIN",
-        payload: {
-          user: user.data.data,
-        },
-      });
+      try {
+        const token = sessionStorage.getItem("token");
+        setAuthToken(token);
+        if (token) {
+          const user = await API.get("/user/profile");
+          dispatch({
+            type: "LOGIN",
+            payload: {
+              user: user.data.data,
+            },
+          });
+        }
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error.response);
+      }
     };
 
     getUser();
   }, [dispatch]);
 
+  if (loading) {
+    return <Loading />;
+  }
   if (state.user.listAs === "Owner") {
     return (
       <>
@@ -36,8 +47,7 @@ const AddProperty = () => {
       </>
     );
   } else {
-    // return <Redirect to="/" />;
-    return <NotFound />;
+    return <Redirect to="/" />;
   }
 };
 

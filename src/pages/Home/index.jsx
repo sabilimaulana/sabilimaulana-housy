@@ -6,8 +6,8 @@ import { UserContext } from "../../contexts/UserContext";
 import { FilterContext } from "../../contexts/FilterContext";
 import { convertToAngka } from "../../utils/moneyConvert.js";
 import OwnerContent from "../../components/OwnerContent";
-import axios from "axios";
 import Loading from "../../components/Loading";
+import { API, setAuthToken } from "../../service/api";
 
 function Home() {
   const { state, dispatch } = useContext(UserContext);
@@ -150,29 +150,28 @@ function Home() {
   console.log("code by sabilimaulana");
   useEffect(() => {
     const getUser = async () => {
-      const token = sessionStorage.getItem("token");
-      if (token) {
-        const user = await axios.get(
-          "http://localhost:8080/api/v1/user/profile",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-
-        dispatch({
-          type: "LOGIN",
-          payload: {
-            user: user.data.data,
-          },
-        });
+      try {
+        const token = sessionStorage.getItem("token");
+        if (token) {
+          setAuthToken(token);
+          const user = await API.get("/user/profile");
+          dispatch({
+            type: "LOGIN",
+            payload: {
+              user: user.data.data,
+            },
+          });
+        }
+      } catch (error) {
+        console.log(error.response);
       }
     };
 
     const getHouses = async () => {
       try {
         setLoading(true);
-        const result = await axios.get(
-          "http://localhost:8080/api/v1/properties"
-        );
-        setHouses(result.data.data);
+        const result = await API.get("/properties");
+        setHouses(result.data.data.reverse());
         setLoading(false);
       } catch (error) {
         setError(true);

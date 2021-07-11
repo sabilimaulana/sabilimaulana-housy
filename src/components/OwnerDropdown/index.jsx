@@ -24,74 +24,79 @@ const OwnerDropdown = ({ showDropdown, onHide }) => {
     sessionStorage.clear("user");
   };
 
-  return showDropdown ? (
-    <>
-      <div className={styles.dropdownWrapper}>
-        <img
-          src={triangle}
-          alt="backflip triangle"
-          className={styles.triangle}
-        />
-
-        <div
-          className={styles.dropdownMenuWrapper}
-          onClick={() => {
-            router.push("/me");
-          }}
-        >
+  return (
+    showDropdown && (
+      <>
+        <div className={styles.dropdownWrapper}>
           <img
-            className={styles.menuIcon}
-            src={userIcon}
-            alt="user icon"
-            width="40px"
+            src={triangle}
+            alt="backflip triangle"
+            className={styles.triangle}
           />
-          <p className={styles.menuText}>Profile</p>
-        </div>
 
-        <div
-          className={styles.dropdownMenuWrapper}
-          onClick={() => {
-            router.push("/add-property");
-          }}
-        >
-          <img
-            className={styles.menuIcon}
-            src={propertyIcon}
-            alt="property icon"
-            width="40px"
-          />
-          <p className={styles.menuText}>Add property</p>
-        </div>
+          <div
+            className={styles.dropdownMenuWrapper}
+            onClick={() => {
+              router.push("/me");
+              onHide();
+            }}
+          >
+            <img
+              className={styles.menuIcon}
+              src={userIcon}
+              alt="user icon"
+              width="40px"
+            />
+            <p className={styles.menuText}>Profile</p>
+          </div>
 
-        <div
-          className={styles.dropdownMenuWrapper}
-          onClick={() => {
-            router.push("/my-history");
-          }}
-        >
-          <img
-            className={styles.menuIcon}
-            src={billIcon}
-            alt="bill icon"
-            width="40px"
-          />
-          <p className={styles.menuText}>History</p>
-        </div>
+          <div
+            className={styles.dropdownMenuWrapper}
+            onClick={() => {
+              router.push("/add-property");
+              onHide();
+            }}
+          >
+            <img
+              className={styles.menuIcon}
+              src={propertyIcon}
+              alt="property icon"
+              width="40px"
+            />
+            <p className={styles.menuText}>Add property</p>
+          </div>
 
-        <p className={styles.divider}></p>
-        <div className={styles.dropdownMenuWrapper} onClick={handleLogout}>
-          <img
-            className={styles.menuIcon}
-            src={logoutIcon}
-            alt="logout icon"
-            width="40px"
-          />
-          <p className={styles.menuText}>Logout</p>
+          <div
+            className={styles.dropdownMenuWrapper}
+            onClick={() => {
+              router.push("/my-history");
+              onHide();
+            }}
+          >
+            <img
+              className={styles.menuIcon}
+              src={billIcon}
+              alt="bill icon"
+              width="40px"
+            />
+            <p className={styles.menuText}>History</p>
+          </div>
+
+          <p className={styles.divider}></p>
+          <div className={styles.dropdownMenuWrapper} onClick={handleLogout}>
+            <img
+              className={styles.menuIcon}
+              src={logoutIcon}
+              alt="logout icon"
+              width="40px"
+            />
+            <p className={styles.menuText}>Logout</p>
+          </div>
         </div>
-      </div>
-      <div className={styles.background} onClick={onHide}></div>
-    </>
-  ) : null;
+        <div className={styles.background} onClick={onHide}></div>
+      </>
+    )
+  );
 };
 
 export default OwnerDropdown;

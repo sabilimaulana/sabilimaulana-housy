@@ -1,77 +1,56 @@
 import { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router";
-import axios from "axios";
+import { Redirect, useParams } from "react-router";
 import HouseContent from "../../components/HouseContent";
 import Navbar from "../../components/Navbar";
 import { UserContext } from "../../contexts/UserContext";
 import Loading from "../../components/Loading";
+import { API, setAuthToken } from "../../service/api";
 
 const HouseDetail = () => {
   const { id } = useParams();
   const { dispatch } = useContext(UserContext);
 
   const [house, setHouse] = useState({});
-  // console.log(id);
-
-  // useEffect(() => {
-  //   const userSession = JSON.parse(sessionStorage.getItem("user"));
-
-  //   if (userSession) {
-  //     dispatch({
-  //       type: "LOGIN",
-  //       payload: {
-  //         user: userSession,
-  //       },
-  //     });
-  //   } else {
-  //     dispatch({
-  //       type: "LOGOUT",
-  //     });
-  //   }
-
-  //   const res = houses.filter((house) => {
-  //     return house.id === parseInt(id);
-  //   })[0];
-
-  //   setHouse(res);
-  // }, [id, dispatch]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getUser = async () => {
-      const token = sessionStorage.getItem("token");
-      if (token) {
-        const user = await axios.get(
-          "http://localhost:8080/api/v1/user/profile",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-
-        dispatch({
-          type: "LOGIN",
-          payload: {
-            user: user.data.data,
-          },
-        });
+      try {
+        const token = sessionStorage.getItem("token");
+        if (token) {
+          setAuthToken(token);
+          const user = await API.get("/user/profile");
+          dispatch({
+            type: "LOGIN",
+            payload: {
+              user: user.data.data,
+            },
+          });
+        }
+      } catch (error) {
+        console.log(error.response);
       }
     };
 
     const getHouse = async (id) => {
       try {
-        const result = await axios.get(
-          `http://localhost:8080/api/v1/property/${id}`
-        );
+        const result = await API.get(`/property/${id}`);
         setHouse(result.data.data);
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.log(error.response);
       }
     };
 
     getUser();
     getHouse(id);
-    // const res = dummyHouse.filter((house) => {
-    //   return house.id === parseInt(id);
-    // })[0];
-    // setHouse(res);
   }, [id, dispatch]);
+
+  if (loading) {
+    return <Loading />;
+  }
+
   if (house.id) {
     return (
       <>
@@ -80,8 +59,17 @@ const HouseDetail = () => {
       </>
     );
   } else {
-    return <Loading />;
+    return <Redirect to="/" />;
   }
+
+  //  else {
+  //   if (loading) {
+  //     console.log("loading");
+  //     return <Loading />;
+  //   }
+  //   return <p>none</p>;
+  // }
+  // return <p>lala</p>;
 };
 
 export default HouseDetail;
