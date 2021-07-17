@@ -114,9 +114,10 @@ const Signin = ({ showModal, onHide, onHere }) => {
                 <label
                   className={styles.hereButton}
                   onClick={() => {
-                    onHide();
                     onHere();
                     setWarning("");
+                    setUserInput({ username: "", password: "" });
+                    onHide();
                   }}
                 >
                   Here
@@ -128,8 +129,9 @@ const Signin = ({ showModal, onHide, onHere }) => {
         <div
           className={styles.background}
           onClick={() => {
-            onHide();
             setWarning("");
+            setUserInput({ username: "", password: "" });
+            onHide();
           }}
         ></div>
       </>

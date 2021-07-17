@@ -310,12 +310,7 @@ const BookingCard = ({ button, orderDetail, invoice, marginBottom }) => {
                 draggable="false"
                 style={{ border: "2px solid black" }}
               />
-            ) : status === "Approved" ? (
-              <QRCode
-                value={`http://localhost:8080/api/v1/transaction/${id}`}
-                size={140}
-              />
-            ) : status === "Cancel" ? (
+            ) : status === "Approved" || status === "Cancel" ? (
               <QRCode
                 value={`http://localhost:8080/api/v1/transaction/${id}`}
                 size={140}
@@ -380,9 +375,13 @@ const BookingCard = ({ button, orderDetail, invoice, marginBottom }) => {
       </div>
       {button && status === "Waiting Payment" && (
         <div className={styles.buttonWrapper}>
-          <button className={styles.buttonPay} onClick={handlePay}>
-            Pay
-          </button>
+          {isProofImageUploaded ? (
+            <button className={styles.buttonPay} onClick={handlePay}>
+              Pay
+            </button>
+          ) : (
+            <button className={styles.buttonPayDisable}>Pay</button>
+          )}
         </div>
       )}
       <PayPopup

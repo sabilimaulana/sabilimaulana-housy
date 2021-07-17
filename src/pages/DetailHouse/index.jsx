@@ -61,15 +61,6 @@ const HouseDetail = () => {
   } else {
     return <Redirect to="/" />;
   }
-
-  //  else {
-  //   if (loading) {
-  //     console.log("loading");
-  //     return <Loading />;
-  //   }
-  //   return <p>none</p>;
-  // }
-  // return <p>lala</p>;
 };
 
 export default HouseDetail;

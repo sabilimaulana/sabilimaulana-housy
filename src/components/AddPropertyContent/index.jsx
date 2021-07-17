@@ -2,9 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import styles from "./AddPropertyContent.module.css";
 import folderIcon from "../../assets/images/folder-icon.svg";
 import closeIcon from "../../assets/images/close-icon.svg";
-import axios from "axios";
 import { UserContext } from "../../contexts/UserContext";
 import dropdownIcon from "../../assets/images/black-dropdown-icon.svg";
+import { API } from "../../service/api";
 
 const AddPropertyContent = () => {
   const { state } = useContext(UserContext);
@@ -188,15 +188,16 @@ const AddPropertyContent = () => {
 
       const token = await sessionStorage.getItem("token");
 
-      await axios({
+      await API({
         method: "POST",
-        url: "http://localhost:8080/api/v1/property",
+        url: "/property",
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
         data: bodyForm,
       });
+
       window.location.reload();
     } catch (error) {
       console.log(error.response);
@@ -206,10 +207,10 @@ const AddPropertyContent = () => {
   useEffect(() => {
     const getCities = async () => {
       try {
-        const result = await axios.get("http://localhost:8080/api/v1/cities");
+        const result = await API.get("/cities");
+
         setCities(result.data.data);
         setCity(result.data.data[0]?.id);
-        // setCities()
       } catch (error) {
         console.log(error.data);
       }

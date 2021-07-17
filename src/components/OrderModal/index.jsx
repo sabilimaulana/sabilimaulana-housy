@@ -1,5 +1,4 @@
 import DatePicker from "react-datepicker";
-import axios from "axios";
 import { useState, useContext } from "react";
 
 import styles from "./orderModal.module.css";
@@ -8,6 +7,7 @@ import calendarIcon from "../../assets/images/calendar-icon.svg";
 import verticalLine from "../../assets/images/vertical-line.svg";
 import dropdownIcon from "../../assets/images/dropdown-icon.svg";
 import { UserContext } from "../../contexts/UserContext";
+import { API } from "../../service/api";
 
 const OrderModal = ({ showModal, onHide, house, duration, price }) => {
   const [checkinDate, setCheckinDate] = useState();
@@ -68,9 +68,8 @@ const OrderModal = ({ showModal, onHide, house, duration, price }) => {
         userId: state.user.id,
         ownerId: house.ownerId,
       };
-      console.log(orderDetail);
-
-      await axios.post("http://localhost:8080/api/v1/transaction", orderDetail);
+      await API.post("/transaction", orderDetail);
+      // await axios.post("http://localhost:8080/api/v1/transaction", orderDetail);
     } catch (error) {
       console.log(error.response);
     }

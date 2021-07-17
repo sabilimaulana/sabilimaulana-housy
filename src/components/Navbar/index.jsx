@@ -13,13 +13,11 @@ import UserDropdown from "../UserDropdown";
 // import OwnerDropdown from "../OwnerDropdown";
 
 import { UserContext } from "../../contexts/UserContext";
-import { Link, Router, useHistory } from "react-router-dom";
 import FilterContext from "../../contexts/FilterContext";
 import OwnerDropdown from "../OwnerDropdown";
 
 const Navbar = ({ searchbar }) => {
   // handleSearch, searchText,
-  const router = useHistory();
 
   const { state } = useContext(UserContext);
 
@@ -54,7 +52,7 @@ const Navbar = ({ searchbar }) => {
 
   return (
     <nav className={styles.navbar}>
-      <Link to="/">
+      <a href="/">
         <img
           src={brandIcon}
           alt="brand icon"
@@ -63,7 +61,10 @@ const Navbar = ({ searchbar }) => {
             window.location.reload();
           }}
         />
-      </Link>
+      </a>
+      {/* <Link to="/">
+  
+      </Link> */}
 
       {searchbar && (
         <form className={styles.searchForm}>

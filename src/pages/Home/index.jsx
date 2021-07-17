@@ -8,6 +8,8 @@ import { convertToAngka } from "../../utils/moneyConvert.js";
 import OwnerContent from "../../components/OwnerContent";
 import Loading from "../../components/Loading";
 import { API, setAuthToken } from "../../service/api";
+import io from "socket.io-client";
+let socket;
 
 function Home() {
   const { state, dispatch } = useContext(UserContext);
@@ -146,6 +148,15 @@ function Home() {
     return filteredHouseBasedOnBudget;
   };
 
+  // socket implementation
+  const loadProperties = async () => {
+    await socket.emit("load property");
+    await socket.on("property", (data) => {
+      console.log(data);
+      setHouses(data.reverse());
+    });
+  };
+
   // console.log(filterState);
   console.log("code by sabilimaulana");
   useEffect(() => {
@@ -181,7 +192,25 @@ function Home() {
     };
 
     getUser();
-    getHouses();
+    // getHouses();
+
+    // socket.io section
+    // connection on specific namespace / route
+    socket = io("http://localhost:8080/property", {
+      transports: ["websocket"],
+    });
+
+    loadProperties();
+
+    // triggered if connection error
+    socket.on("connect_error", (err) => {
+      console.log(err.message); // prints the message associated with the error
+      setHouses([]);
+    });
+    return () => {
+      socket.disconnect(); // always disconnect when component is unmount
+      setHouses([]); // set to initial state (prevent memory leak)
+    };
   }, [dispatch]);
 
   // console.log(state.user.status);

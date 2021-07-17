@@ -23,7 +23,7 @@ const OwnerContent = () => {
         );
 
         setOrders(result.data.data.reverse());
-        console.log(result.data.data);
+        // console.log(result.data.data);
       } catch (error) {
         console.log(error.response);
       }

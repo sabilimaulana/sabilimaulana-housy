@@ -16,14 +16,6 @@ const HouseContent = ({ house }) => {
   const { filterState } = useContext(FilterContext);
   const { state } = useContext(UserContext);
 
-  console.log(state.user.name);
-  // const handleBook = () => {
-  //   if(!state.user){
-  //     set
-  //   }
-  //   setOrderModalShow(true);
-  // };
-
   let price = "";
 
   if (filterState.filter.duration === "Day") {
@@ -82,7 +74,7 @@ const HouseContent = ({ house }) => {
             }`}</h3>
 
             <p className={styles.address}>
-              {house.address}
+              {`${house.address}, ${house.City.cityName}.`}
               {/* Jl. Elang IV Perum Permata Bintaro Residence, Pondok Aren,
               Tangerang Selatan */}
             </p>
