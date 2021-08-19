@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "./App.css";
 import Content from "./components/Content";
 import Navbar from "./components/Navbar";
